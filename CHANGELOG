@@ -1,3 +1,4 @@
+* get_email: Remove base64 when reading data
 * Add doc
 * README and legal notice
 * Initial release

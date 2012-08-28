@@ -168,8 +168,8 @@ class ElectronicMail(ModelSQL, ModelView):
                 CONFIG['data_path'], db_name, 
                 'email', filename[0:2], filename)
             try:
-                with open(filename, 'r') as file_p:
-                    value =  file_p.read()
+                with open(filename, 'rb') as file_p:
+                    value = buffer(file_p.read())
             except IOError:
                 pass
         return value
@@ -179,9 +179,7 @@ class ElectronicMail(ModelSQL, ModelView):
         """
         result = { }
         for electronic_mail in self.browse(ids):
-            result[electronic_mail.id] = base64.encodestring(
-                self._get_email(electronic_mail)
-                ) or False
+            result[electronic_mail.id] = self._get_email(electronic_mail) or False
         return result
 
     def set_email(self, ids, name, data):
