@@ -1,3 +1,4 @@
+* Add es_ES locale
 * Review ca_ES locale
 * Add ca_ES locale
 * get_email: Remove base64 when reading data
