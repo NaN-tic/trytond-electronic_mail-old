@@ -132,6 +132,14 @@ class ElectronicMail(ModelSQL, ModelView):
     def default_flag_recent(self):
         return False
 
+    def get_rec_name(self, ids, name):
+        if not ids:
+            return {}
+        res = {}
+        for mail in self.browse(ids):
+            res[mail.id] = '%s (ID: %s)' % (mail.subject, mail.id)
+        return res
+
     def get_mailbox_owner(self, ids, name):
         "Returns owner of mailbox"
         mails = self.browse(ids)
