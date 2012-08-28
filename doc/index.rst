@@ -8,12 +8,6 @@ Configuration:
 
 In your configuration Tryton server file, configure:
 
-- smtp_server
-- smtp_port
-- smtp_ssl
-- smtp_tls
-- smtp_password
-- smtp_user
 - data_path
 
 Mailbox:
