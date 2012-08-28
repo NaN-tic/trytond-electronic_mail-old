@@ -100,7 +100,7 @@ msgstr "Enviat"
 
 msgctxt "field:electronic_mail,size:"
 msgid "Size"
-msgstr "Tamany"
+msgstr "Mida"
 
 msgctxt "field:electronic_mail,subject:"
 msgid "Subject"
@@ -300,7 +300,7 @@ msgstr "Usuari modificació"
 
 msgctxt "help:electronic_mail,message_id:"
 msgid "Unique Message Identifier"
-msgstr "Indentificador únic del missatge"
+msgstr "Identificador únic del missatge"
 
 msgctxt "help:electronic_mail.header,name:"
 msgid "Name of Header Field"
@@ -380,7 +380,7 @@ msgstr "Pare"
 
 msgctxt "view:electronic_mail.mailbox:"
 msgid "Permissions"
-msgstr "Permissos"
+msgstr "Permisos"
 
 msgctxt "view:electronic_mail:"
 msgid "Email"
