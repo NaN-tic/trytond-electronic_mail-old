@@ -18,5 +18,6 @@
         'electronic_mail.xml',
     ],
     'translation': [
+        'locale/ca_ES.po',
     ],
 }
