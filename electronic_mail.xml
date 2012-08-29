@@ -26,10 +26,10 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
       <field name="type">tree</field>
       <field name="arch" type="xml">
         <![CDATA[
-	        <tree string="Mailboxes">
-	        <field name="name"/>
-	        <field name="user"/>
-	        </tree>
+        <tree string="Mailboxes">
+          <field name="name"/>
+          <field name="user"/>
+        </tree>
         ]]>
       </field>
     </record>
@@ -88,7 +88,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
           <field name="name"/>
           <field name="value"/>
         </tree>
-	    ]]>
+      ]]>
       </field>
     </record>
 
@@ -105,7 +105,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
         <field name="subject"/>
         <field name="date"/>
       </tree>
-	    ]]>
+      ]]>
       </field>
     </record>
     <record model="ir.ui.view" id="mail_view_form">
