@@ -22,7 +22,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
     </record>
 
     <record model="ir.ui.view" id="mailbox_view_tree">
-      <field name="model">electronic_mail.mailbox</field>
+      <field name="model">electronic.mail.mailbox</field>
       <field name="type">tree</field>
       <field name="arch" type="xml">
         <![CDATA[
@@ -34,7 +34,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
       </field>
     </record>
     <record model="ir.ui.view" id="mailbox_view_form">
-      <field name="model">electronic_mail.mailbox</field>
+      <field name="model">electronic.mail.mailbox</field>
       <field name="type">form</field>
       <field name="arch" type="xml">
       <![CDATA[
@@ -64,7 +64,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
     </record>
     <record model="ir.action.act_window" id="act_mailbox_form">
       <field name="name">Mailboxes</field>
-      <field name="res_model">electronic_mail.mailbox</field>
+      <field name="res_model">electronic.mail.mailbox</field>
     </record>
     <record model="ir.action.act_window.view" id="act_mailbox_form_view1">
       <field name="sequence" eval="10"/>
@@ -80,7 +80,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
       parent="menu_email_management"/>
 
     <record model="ir.ui.view" id="headers_view_tree">
-      <field name="model">electronic_mail.header</field>
+      <field name="model">electronic.mail.header</field>
       <field name="type">tree</field>
       <field name="arch" type="xml">
       <![CDATA[
@@ -93,7 +93,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
     </record>
 
     <record model="ir.ui.view" id="mail_view_tree">
-      <field name="model">electronic_mail</field>
+      <field name="model">electronic.mail</field>
       <field name="type">tree</field>
       <field name="arch" type="xml">
       <![CDATA[
@@ -109,7 +109,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
       </field>
     </record>
     <record model="ir.ui.view" id="mail_view_form">
-      <field name="model">electronic_mail</field>
+      <field name="model">electronic.mail</field>
       <field name="type">form</field>
       <field name="arch" type="xml">
       <![CDATA[
@@ -152,7 +152,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
     </record>
     <record model="ir.action.act_window" id="act_mail_form">
       <field name="name">Emails</field>
-      <field name="res_model">electronic_mail</field>
+      <field name="res_model">electronic.mail</field>
     </record>
     <record model="ir.action.act_window.view" id="act_mail_form_view1">
       <field name="sequence" eval="10"/>
@@ -169,7 +169,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
   
     <!-- Access Rule Mailbox -->
     <record model="ir.model.access" id="access_mailbox_admin">
-      <field name="model" search="[('model', '=', 'electronic_mail.mailbox')]"/>
+      <field name="model" search="[('model', '=', 'electronic.mail.mailbox')]"/>
       <field name="group" ref="group_email_admin"/>
       <field name="perm_read" eval="True"/>
       <field name="perm_write" eval="True"/>
@@ -177,7 +177,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
       <field name="perm_delete" eval="True"/>
     </record>
     <record model="ir.model.access" id="access_mailbox_user">
-      <field name="model" search="[('model', '=', 'electronic_mail.mailbox')]"/>
+      <field name="model" search="[('model', '=', 'electronic.mail.mailbox')]"/>
       <field name="group" ref="group_email_user"/>
       <field name="perm_read" eval="True"/>
       <field name="perm_write" eval="False"/>
@@ -186,7 +186,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
     </record>
     <!-- Access Rule Mail -->
     <record model="ir.model.access" id="access_mail_admin">
-      <field name="model" search="[('model', '=', 'electronic_mail')]"/>
+      <field name="model" search="[('model', '=', 'electronic.mail')]"/>
       <field name="group" ref="group_email_admin"/>
       <field name="perm_read" eval="True"/>
       <field name="perm_write" eval="True"/>
@@ -194,7 +194,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
       <field name="perm_delete" eval="True"/>
     </record>
     <record model="ir.model.access" id="access_mail_user">
-      <field name="model" search="[('model', '=', 'electronic_mail')]"/>
+      <field name="model" search="[('model', '=', 'electronic.mail')]"/>
       <field name="group" ref="group_email_user"/>
       <field name="perm_read" eval="True"/>
       <field name="perm_write" eval="True"/>
@@ -204,7 +204,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
 
     <!-- Rule to read mailboxes -->
     <record model="ir.rule.group" id="rule_group_read_mailbox">
-      <field name="model" search="[('model', '=', 'electronic_mail.mailbox')]"/>
+      <field name="model" search="[('model', '=', 'electronic.mail.mailbox')]"/>
       <field name="global_p" eval="True"/>
       <field name="default_p" eval="False"/>
       <field name="perm_read" eval="True"/>
@@ -214,28 +214,28 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
     </record>
     <record model="ir.rule" id="rule_group_read_mailbox_line1">
       <field name="field" 
-             search="[('name', '=', 'user'), ('model.model', '=', 'electronic_mail.mailbox')]"/>
+             search="[('name', '=', 'user'), ('model.model', '=', 'electronic.mail.mailbox')]"/>
       <field name="operator">=</field>
       <field name="operand">User</field>
       <field name="rule_group" ref="rule_group_read_mailbox"/>
     </record>
     <record model="ir.rule" id="rule_group_read_mailbox_line2">
       <field name="field" 
-        search="[('name', '=', 'read_users'), ('model.model', '=', 'electronic_mail.mailbox')]"/>
+        search="[('name', '=', 'read_users'), ('model.model', '=', 'electronic.mail.mailbox')]"/>
       <field name="operator">=</field>
       <field name="operand">User</field>
       <field name="rule_group" ref="rule_group_read_mailbox"/>
     </record>
     <record model="ir.rule" id="rule_group_read_mailbox_line3">
       <field name="field" 
-        search="[('name', '=', 'write_users'), ('model.model', '=', 'electronic_mail.mailbox')]"/>
+        search="[('name', '=', 'write_users'), ('model.model', '=', 'electronic.mail.mailbox')]"/>
       <field name="operator">=</field>
       <field name="operand">User</field>
       <field name="rule_group" ref="rule_group_read_mailbox"/>
     </record>
     <record model="ir.rule" id="rule_group_read_mailbox_line4">
       <field name="field" 
-        search="[('name', '=', 'create_uid'), ('model.model', '=', 'electronic_mail.mailbox')]"/>
+        search="[('name', '=', 'create_uid'), ('model.model', '=', 'electronic.mail.mailbox')]"/>
       <field name="operator">=</field>
       <field name="operand">User</field>
       <field name="rule_group" ref="rule_group_read_mailbox"/>
@@ -243,7 +243,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
 
     <!-- Rule to read emails -->
     <record model="ir.rule.group" id="rule_group_read_mail">
-      <field name="model" search="[('model', '=', 'electronic_mail')]"/>
+      <field name="model" search="[('model', '=', 'electronic.mail')]"/>
       <field name="global_p" eval="True"/>
       <field name="default_p" eval="False"/>
       <field name="perm_read" eval="True"/>
@@ -253,21 +253,21 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
     </record>
     <record model="ir.rule" id="rule_group_read_mail_line1">
       <field name="field" 
-        search="[('name', '=', 'mailbox_owner'), ('model.model', '=', 'electronic_mail')]"/>
+        search="[('name', '=', 'mailbox_owner'), ('model.model', '=', 'electronic.mail')]"/>
       <field name="operator">=</field>
       <field name="operand">User</field>
       <field name="rule_group" ref="rule_group_read_mail"/>
     </record>
     <record model="ir.rule" id="rule_group_read_mail_line2">
       <field name="field" 
-        search="[('name', '=', 'mailbox_read_users'), ('model.model', '=', 'electronic_mail')]"/>
+        search="[('name', '=', 'mailbox_read_users'), ('model.model', '=', 'electronic.mail')]"/>
       <field name="operator">=</field>
       <field name="operand">User</field>
       <field name="rule_group" ref="rule_group_read_mail"/>
     </record>
     <record model="ir.rule" id="rule_group_read_mail_line3">
       <field name="field" 
-        search="[('name', '=', 'mailbox_write_users'), ('model.model', '=', 'electronic_mail')]"/>
+        search="[('name', '=', 'mailbox_write_users'), ('model.model', '=', 'electronic.mail')]"/>
       <field name="operator">=</field>
       <field name="operand">User</field>
       <field name="rule_group" ref="rule_group_read_mail"/>
@@ -275,7 +275,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
 
     <!-- Rule to write emails -->
     <record model="ir.rule.group" id="rule_group_write_mail">
-      <field name="model" search="[('model', '=', 'electronic_mail')]"/>
+      <field name="model" search="[('model', '=', 'electronic.mail')]"/>
       <field name="global_p" eval="True"/>
       <field name="default_p" eval="False"/>
       <field name="perm_read" eval="True"/>
@@ -285,14 +285,14 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
     </record>
     <record model="ir.rule" id="rule_group_write_mail_line1">
       <field name="field" 
-        search="[('name', '=', 'mailbox_owner'), ('model.model', '=', 'electronic_mail')]"/>
+        search="[('name', '=', 'mailbox_owner'), ('model.model', '=', 'electronic.mail')]"/>
       <field name="operator">=</field>
       <field name="operand">User</field>
       <field name="rule_group" ref="rule_group_write_mail"/>
     </record>
     <record model="ir.rule" id="rule_group_write_mailbox_line2">
       <field name="field" 
-        search="[('name', '=', 'mailbox_write_users'), ('model.model', '=', 'electronic_mail')]"/>
+        search="[('name', '=', 'mailbox_write_users'), ('model.model', '=', 'electronic.mail')]"/>
       <field name="operator">=</field>
       <field name="operand">User</field>
       <field name="rule_group" ref="rule_group_write_mail"/>

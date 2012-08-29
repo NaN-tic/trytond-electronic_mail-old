@@ -24,18 +24,18 @@ from trytond.pool import Pool
 
 class Mailbox(ModelSQL, ModelView):
     "Mailbox"
-    _name = "electronic_mail.mailbox"
+    _name = "electronic.mail.mailbox"
     _description = __doc__
 
     name = fields.Char('Name', required=True)
     user = fields.Many2One('res.user', 'Owner')
     parents = fields.Many2Many(
-             'electronic_mail.mailbox-mailbox',
+             'electronic.mail.mailbox.mailbox',
              'parent', 'child' ,'Parents')
     subscribed = fields.Boolean('Subscribed')
-    read_users = fields.Many2Many('electronic_mail.mailbox-read-res.user',
+    read_users = fields.Many2Many('electronic.mail.mailbox.read.res.user',
             'mailbox', 'user', 'Read Users')
-    write_users = fields.Many2Many('electronic_mail.mailbox-write-res.user',
+    write_users = fields.Many2Many('electronic.mail.mailbox.write.res.user',
             'mailbox', 'user', 'Write Users')
 
 Mailbox()
@@ -44,11 +44,11 @@ Mailbox()
 class MailboxParent(ModelSQL):
     'Mailbox - parent - Mailbox'
     _description = __doc__
-    _name = 'electronic_mail.mailbox-mailbox'
+    _name = 'electronic.mail.mailbox.mailbox'
 
-    parent = fields.Many2One('electronic_mail.mailbox', 'Parent',
+    parent = fields.Many2One('electronic.mail.mailbox', 'Parent',
             ondelete='CASCADE', required=True, select=1)
-    child = fields.Many2One('electronic_mail.mailbox', 'Child',
+    child = fields.Many2One('electronic.mail.mailbox', 'Child',
             ondelete='CASCADE', required=True, select=1)
 
 MailboxParent()
@@ -57,9 +57,9 @@ MailboxParent()
 class ReadUser(ModelSQL):
     'Electronic Mail - read - User'
     _description = __doc__
-    _name = 'electronic_mail.mailbox-read-res.user'
+    _name = 'electronic.mail.mailbox.read.res.user'
 
-    mailbox = fields.Many2One('electronic_mail.mailbox', 'Mailbox',
+    mailbox = fields.Many2One('electronic.mail.mailbox', 'Mailbox',
             ondelete='CASCADE', required=True, select=1)
     user = fields.Many2One('res.user', 'User', ondelete='CASCADE',
             required=True, select=1)
@@ -70,9 +70,9 @@ ReadUser()
 class WriteUser(ModelSQL):
     'Mailbox - write - User'
     _description = __doc__
-    _name = 'electronic_mail.mailbox-write-res.user'
+    _name = 'electronic.mail.mailbox.write.res.user'
 
-    mailbox = fields.Many2One('electronic_mail.mailbox', 'mailbox',
+    mailbox = fields.Many2One('electronic.mail.mailbox', 'mailbox',
             ondelete='CASCADE', required=True, select=1)
     user = fields.Many2One('res.user', 'User', ondelete='CASCADE',
             required=True, select=1)
@@ -82,11 +82,11 @@ WriteUser()
 
 class ElectronicMail(ModelSQL, ModelView):
     "E-mail"
-    _name = 'electronic_mail'
+    _name = 'electronic.mail'
     _description = __doc__
 
     mailbox = fields.Many2One(
-        'electronic_mail.mailbox', 'Mailbox', required=True)
+        'electronic.mail.mailbox', 'Mailbox', required=True)
     from_ = fields.Char('From')
     sender = fields.Char('Sender')
     to = fields.Char('To')
@@ -97,7 +97,7 @@ class ElectronicMail(ModelSQL, ModelView):
     message_id = fields.Char('Message-ID', help='Unique Message Identifier')
     in_reply_to = fields.Char('In-Reply-To')
     headers = fields.One2Many(
-        'electronic_mail.header', 'electronic_mail', 'Headers')
+        'electronic.mail.header', 'electronic_mail', 'Headers')
     digest = fields.Char('MD5 Digest', size=32)
     collision = fields.Integer('Collision')
     email = fields.Function(fields.Binary('Email'), 'get_email', 'set_email')
@@ -268,7 +268,7 @@ class ElectronicMail(ModelSQL, ModelView):
         :param mail: email object
         :param mailbox: ID of the mailbox
         """
-        header_obj = Pool().get('electronic_mail.header')
+        header_obj = Pool().get('electronic.mail.header')
         email_date = mail.get('date') and datetime.fromtimestamp(
                 mktime(parsedate(mail.get('date'))))
         values = {
@@ -294,12 +294,12 @@ ElectronicMail()
 
 class Header(ModelSQL, ModelView):
     "Header fields"
-    _name = 'electronic_mail.header'
+    _name = 'electronic.mail.header'
     _description = __doc__
 
     name = fields.Char('Name', help='Name of Header Field')
     value = fields.Char('Value', help='Value of Header Field')
-    electronic_mail = fields.Many2One('electronic_mail', 'e-mail')
+    electronic_mail = fields.Many2One('electronic.mail', 'e-mail')
 
     def create_from_email(self, mail, mail_id):
         """
