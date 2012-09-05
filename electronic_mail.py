@@ -84,6 +84,7 @@ class ElectronicMail(ModelSQL, ModelView):
     "E-mail"
     _name = 'electronic.mail'
     _description = __doc__
+    _order_name = 'date'
 
     mailbox = fields.Many2One(
         'electronic.mail.mailbox', 'Mailbox', required=True)
@@ -116,6 +117,10 @@ class ElectronicMail(ModelSQL, ModelView):
     mailbox_write_users = fields.Function(
         fields.One2Many('res.user', None, 'Write Users'),
         'get_mailbox_users', searcher='search_mailbox_users')
+
+    def __init__(self):
+        super(ElectronicMail, self).__init__()
+        self._order.insert(0, ('date', 'DESC'))
 
     def default_collision(self):
         return 0

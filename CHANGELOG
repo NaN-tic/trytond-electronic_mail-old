@@ -1,3 +1,4 @@
+* ElectronicEmail order by date DESC
 * Rename Model name. Replace _ to . (dot)
 * Add get_rec_name in ElectronicMail
 * Review INSTALL documentation
