@@ -102,6 +102,7 @@ class ElectronicMail(ModelSQL, ModelView):
     digest = fields.Char('MD5 Digest', size=32)
     collision = fields.Integer('Collision')
     email = fields.Function(fields.Binary('Email'), 'get_email', 'set_email')
+    flag_send = fields.Boolean('Send', readonly=True)
     flag_seen = fields.Boolean('Seen')
     flag_answered = fields.Boolean('Answered')
     flag_flagged = fields.Boolean('Flagged')

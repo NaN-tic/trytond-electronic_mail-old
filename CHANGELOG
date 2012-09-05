@@ -1,3 +1,4 @@
+* Add flag send field
 * Add mailbox field in electronic.mail tree view
 * Add get_email_valid method in ElectronicMail class
 * ElectronicEmail add template field. Default is False (if template module was installed, don't show templates)

@@ -99,12 +99,13 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
       <![CDATA[
       <tree string="Emails">
         <field name="mailbox"/>
-        <field name="flag_seen"/>
-        <field name="flag_flagged"/>
-        <field name="flag_answered"/>
         <field name="from_"/>
         <field name="subject"/>
         <field name="date"/>
+        <field name="flag_send"/>
+        <field name="flag_seen"/>
+        <field name="flag_flagged"/>
+        <field name="flag_answered"/>
       </tree>
       ]]>
       </field>
@@ -134,6 +135,8 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
           <field name="mailbox"/>
         </group>
         <group colspan="4" col="10" id="flags_area">
+          <label name="flag_send"/>
+          <field name="flag_send"/>
           <label name="flag_seen"/>
           <field name="flag_seen"/>
           <label name="flag_flagged"/>
