@@ -1,3 +1,4 @@
+* ElectronicEmail add template field. Default is False (if template module was installed, don't show templates)
 * ElectronicEmail order by date DESC
 * Rename Model name. Replace _ to . (dot)
 * Add get_rec_name in ElectronicMail
