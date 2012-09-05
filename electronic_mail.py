@@ -298,6 +298,29 @@ class ElectronicMail(ModelSQL, ModelView):
         header_obj.create_from_email(mail, create_id)
         return create_id
 
+    def get_email_valid(self, email):
+        """Get if email is valid. @ and . characters validation
+        :email: str
+        return: True or False
+        """
+        def get_validate_email(email):
+            #  ! # $ % & ' * + - / = ? ^ _ ` { | } ~ 
+            if not re.match(r"^[A-Za-z0-9\.!#\$%&'\*\+-/=\?\^_`\{|\}~]+@[A-Za-z0-9\.!#\$%&'\*\+-/=\?\^_`\{|\}~]+\.[a-zA-Z]*$", email):
+                return False
+            return True
+
+        if not email:
+            return False
+
+        email = email.replace(';',',') #replace separator emails ; -> ,
+        emails = email.split(',')
+        if len(emails)>0:
+            for email in emails:
+                if not get_validate_email(email):
+                    return False
+                    break
+        return True
+
 ElectronicMail()
 
 
