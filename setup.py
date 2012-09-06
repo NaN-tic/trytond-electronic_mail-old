@@ -35,7 +35,8 @@ setup(name='trytond_electronic_mail',
     ],
     package_data={
         'trytond.modules.electronic_mail': info.get('xml', []) \
-                + info.get('translation', []),
+                + info.get('translation', []) \
+                + ['icons/*.svg'],
     },
     classifiers=[
         'Development Status :: 5 - Production/Stable',
