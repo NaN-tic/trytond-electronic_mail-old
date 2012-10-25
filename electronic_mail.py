@@ -8,6 +8,7 @@ import os
 import base64
 import re
 from sys import getsizeof
+
 try:
     import hashlib
 except ImportError:
@@ -22,11 +23,12 @@ from trytond.config import CONFIG
 from trytond.transaction import Transaction
 from trytond.pool import Pool
 
+__all__ = ['Mailbox', 'MailboxParent', 'ReadUser', 'WriteUser',
+    'ElectronicMail', 'Header']
 
 class Mailbox(ModelSQL, ModelView):
     "Mailbox"
-    _name = "electronic.mail.mailbox"
-    _description = __doc__
+    __name__ = "electronic.mail.mailbox"
 
     name = fields.Char('Name', required=True)
     user = fields.Many2One('res.user', 'Owner')
@@ -39,52 +41,44 @@ class Mailbox(ModelSQL, ModelView):
     write_users = fields.Many2Many('electronic.mail.mailbox.write.res.user',
             'mailbox', 'user', 'Write Users')
 
-Mailbox()
 
 
 class MailboxParent(ModelSQL):
     'Mailbox - parent - Mailbox'
-    _description = __doc__
-    _name = 'electronic.mail.mailbox.mailbox'
+    __name__ = 'electronic.mail.mailbox.mailbox'
 
     parent = fields.Many2One('electronic.mail.mailbox', 'Parent',
             ondelete='CASCADE', required=True, select=1)
     child = fields.Many2One('electronic.mail.mailbox', 'Child',
             ondelete='CASCADE', required=True, select=1)
 
-MailboxParent()
 
 
 class ReadUser(ModelSQL):
     'Electronic Mail - read - User'
-    _description = __doc__
-    _name = 'electronic.mail.mailbox.read.res.user'
+    __name__ = 'electronic.mail.mailbox.read.res.user'
 
     mailbox = fields.Many2One('electronic.mail.mailbox', 'Mailbox',
             ondelete='CASCADE', required=True, select=1)
     user = fields.Many2One('res.user', 'User', ondelete='CASCADE',
             required=True, select=1)
 
-ReadUser()
 
 
 class WriteUser(ModelSQL):
     'Mailbox - write - User'
-    _description = __doc__
-    _name = 'electronic.mail.mailbox.write.res.user'
+    __name__ = 'electronic.mail.mailbox.write.res.user'
 
     mailbox = fields.Many2One('electronic.mail.mailbox', 'mailbox',
             ondelete='CASCADE', required=True, select=1)
     user = fields.Many2One('res.user', 'User', ondelete='CASCADE',
             required=True, select=1)
 
-WriteUser()
 
 
 class ElectronicMail(ModelSQL, ModelView):
     "E-mail"
-    _name = 'electronic.mail'
-    _description = __doc__
+    __name__ = 'electronic.mail'
     _order_name = 'date'
 
     mailbox = fields.Many2One(
@@ -102,7 +96,7 @@ class ElectronicMail(ModelSQL, ModelView):
         'electronic.mail.header', 'electronic_mail', 'Headers')
     digest = fields.Char('MD5 Digest', size=32)
     collision = fields.Integer('Collision')
-    email = fields.Function(fields.Binary('Email'), 'get_email', 'set_email')
+    email = fields.Function(fields.Binary('Email'), 'get_email', setter='set_email')
     flag_send = fields.Boolean('Sent', readonly=True)
     flag_seen = fields.Boolean('Seen')
     flag_answered = fields.Boolean('Answered')
@@ -121,54 +115,66 @@ class ElectronicMail(ModelSQL, ModelView):
         fields.One2Many('res.user', None, 'Write Users'),
         'get_mailbox_users', searcher='search_mailbox_users')
 
-    def __init__(self):
-        super(ElectronicMail, self).__init__()
-        self._order.insert(0, ('date', 'DESC'))
+    @classmethod
+    def __setup__(cls):
+        super(ElectronicMail, cls).__setup__()
+        cls._order.insert(0, ('date', 'DESC'))
 
-    def default_collision(self):
+    @staticmethod
+    def default_collision():
         return 0
 
-    def default_flag_seen(self):
+    @staticmethod
+    def default_flag_seen():
         return False
 
-    def default_flag_answered(self):
+    @staticmethod
+    def default_flag_answered():
         return False
 
-    def default_flag_flagged(self):
+    @staticmethod
+    def default_flag_flagged():
         return False
 
-    def default_flag_recent(self):
+    @staticmethod
+    def default_flag_recent():
         return False
 
-    def default_template(self):
+    @staticmethod
+    def default_template():
         return False
 
-    def get_rec_name(self, ids, name):
-        if not ids:
+    @classmethod
+    def get_rec_name(cls, records, name):
+        if not records:
             return {}
         res = {}
-        for mail in self.browse(ids):
+        for mail in records:
             res[mail.id] = '%s (ID: %s)' % (mail.subject, mail.id)
         return res
 
-    def get_mailbox_owner(self, ids, name):
+    @classmethod
+    def get_mailbox_owner(cls, records, name):
         "Returns owner of mailbox"
-        mails = self.browse(ids)
+        mails = records
         return dict([(mail.id, mail.mailbox.user.id) for mail in mails])
 
-    def get_mailbox_users(self, ids, name):
+    @classmethod
+    def get_mailbox_users(cls, records, name):
         assert name in ('mailbox_read_users', 'mailbox_write_users')
         res = {}
-        for mail in self.browse(ids):
+        for mail in records:
             if name == 'mailbox_read_users':
                 res[mail.id] = [x.id for x in mail.mailbox['read_users']]
             else:
                 res[mail.id] = [x.id for x in mail.mailbox['write_users']]
         return res
 
+    @classmethod
     def search_mailbox_owner(self, name, clause):
         return [('mailbox.user',) + clause[1:]]
 
+    @classmethod
     def search_mailbox_users(self, name, clause):
         return [('mailbox.' + name[8:],) + clause[1:]]
 
@@ -193,15 +199,13 @@ class ElectronicMail(ModelSQL, ModelView):
                 pass
         return value
 
-    def get_email(self, ids, name):
+    def get_email(self, name):
         """Fetches email from the data_path as email object
         """
-        result = { }
-        for electronic_mail in self.browse(ids):
-            result[electronic_mail.id] = self._get_email(electronic_mail) or False
-        return result
+        return self._get_email(self) or False
 
-    def set_email(self, ids, name, data):
+    @classmethod
+    def set_email(cls, records, name, data):
         """Saves an email to the data path
 
         :param data: Email as string
@@ -213,7 +217,7 @@ class ElectronicMail(ModelSQL, ModelView):
         directory = os.path.join(CONFIG['data_path'], db_name)
         if not os.path.isdir(directory):
             os.makedirs(directory, 0770)
-        digest = self.make_digest(data)
+        digest = cls.make_digest(data)
         directory = os.path.join(directory, 'email', digest[0:2])
         if not os.path.isdir(directory):
             os.makedirs(directory, 0770)
@@ -258,9 +262,10 @@ class ElectronicMail(ModelSQL, ModelView):
                         directory, digest + '-' + str(collision))
                     with open(filename, 'w') as file_p:
                         file_p.write(data)
-        self.write(ids, {'digest': digest, 'collision': collision})
+        cls.write(records, {'digest': digest, 'collision': collision})
 
-    def make_digest(self, data):
+    @staticmethod
+    def make_digest(data):
         """
         Returns a digest from the mail
 
@@ -300,7 +305,8 @@ class ElectronicMail(ModelSQL, ModelView):
         header_obj.create_from_email(mail, create_id)
         return create_id
 
-    def get_email_valid(self, email):
+    @classmethod
+    def get_email_valid(cls, email):
         """Get if email is valid. @ and . characters validation
         :email: str
         return: True or False
@@ -323,13 +329,10 @@ class ElectronicMail(ModelSQL, ModelView):
                     break
         return True
 
-ElectronicMail()
-
 
 class Header(ModelSQL, ModelView):
     "Header fields"
-    _name = 'electronic.mail.header'
-    _description = __doc__
+    __name__ = 'electronic.mail.header'
 
     name = fields.Char('Name', help='Name of Header Field')
     value = fields.Char('Value', help='Value of Header Field')
@@ -348,5 +351,3 @@ class Header(ModelSQL, ModelView):
                 }
             self.create(values)
         return True
-
-Header()
