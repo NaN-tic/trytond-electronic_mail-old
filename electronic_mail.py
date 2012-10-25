@@ -42,7 +42,6 @@ class Mailbox(ModelSQL, ModelView):
             'mailbox', 'user', 'Write Users')
 
 
-
 class MailboxParent(ModelSQL):
     'Mailbox - parent - Mailbox'
     __name__ = 'electronic.mail.mailbox.mailbox'
@@ -51,7 +50,6 @@ class MailboxParent(ModelSQL):
             ondelete='CASCADE', required=True, select=1)
     child = fields.Many2One('electronic.mail.mailbox', 'Child',
             ondelete='CASCADE', required=True, select=1)
-
 
 
 class ReadUser(ModelSQL):
@@ -64,7 +62,6 @@ class ReadUser(ModelSQL):
             required=True, select=1)
 
 
-
 class WriteUser(ModelSQL):
     'Mailbox - write - User'
     __name__ = 'electronic.mail.mailbox.write.res.user'
@@ -73,7 +70,6 @@ class WriteUser(ModelSQL):
             ondelete='CASCADE', required=True, select=1)
     user = fields.Many2One('res.user', 'User', ondelete='CASCADE',
             required=True, select=1)
-
 
 
 class ElectronicMail(ModelSQL, ModelView):
@@ -178,7 +174,8 @@ class ElectronicMail(ModelSQL, ModelView):
     def search_mailbox_users(self, name, clause):
         return [('mailbox.' + name[8:],) + clause[1:]]
 
-    def _get_email(self, electronic_mail):
+    @staticmethod
+    def _get_email(electronic_mail):
         """
         Returns the email object from reading the FS
         :param electronic_mail: Browse Record of the mail
@@ -278,13 +275,14 @@ class ElectronicMail(ModelSQL, ModelView):
             digest = md5.new(data).hexdigest()
         return digest
 
+    @classmethod
     def create_from_email(self, mail, mailbox):
         """
         Creates a mail record from a given mail
         :param mail: email object
         :param mailbox: ID of the mailbox
         """
-        header_obj = Pool().get('electronic.mail.header')
+        Header = Pool().get('electronic.mail.header')
         email_date = mail.get('date') and datetime.fromtimestamp(
                 mktime(parsedate(mail.get('date'))))
         values = {
@@ -302,11 +300,11 @@ class ElectronicMail(ModelSQL, ModelView):
             'size': getsizeof(mail.as_string()),
             }
         create_id = self.create(values)
-        header_obj.create_from_email(mail, create_id)
+        Header.create_from_email(mail, create_id)
         return create_id
 
-    @classmethod
-    def get_email_valid(cls, email):
+    @staticmethod
+    def get_email_valid(email):
         """Get if email is valid. @ and . characters validation
         :email: str
         return: True or False
@@ -338,6 +336,7 @@ class Header(ModelSQL, ModelView):
     value = fields.Char('Value', help='Value of Header Field')
     electronic_mail = fields.Many2One('electronic.mail', 'e-mail')
 
+    @classmethod
     def create_from_email(self, mail, mail_id):
         """
         :param mail: Email object
