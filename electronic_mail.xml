@@ -264,6 +264,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
       <field name="perm_create" eval="False"/>
       <field name="perm_delete" eval="False"/>
     </record>
+<!--
     <record model="ir.rule" id="rule_group_read_mail_line1">
       <field name="field" 
         search="[('name', '=', 'mailbox_owner'), ('model.model', '=', 'electronic.mail')]"/>
@@ -285,6 +286,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
       <field name="operand">User</field>
       <field name="rule_group" ref="rule_group_read_mail"/>
     </record>
+-->
 
     <!-- Rule to write emails -->
     <record model="ir.rule.group" id="rule_group_write_mail">
@@ -296,6 +298,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
       <field name="perm_create" eval="True"/>
       <field name="perm_delete" eval="True"/>
     </record>
+<!--
     <record model="ir.rule" id="rule_group_write_mail_line1">
       <field name="field" 
         search="[('name', '=', 'mailbox_owner'), ('model.model', '=', 'electronic.mail')]"/>
@@ -310,5 +313,6 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
       <field name="operand">User</field>
       <field name="rule_group" ref="rule_group_write_mail"/>
     </record>
+-->
   </data>
 </tryton>
