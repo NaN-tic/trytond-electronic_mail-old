@@ -3,13 +3,6 @@
 The COPYRIGHT file at the top level of this repository contains the full copyright notices and license terms. -->
 <tryton>
   <data>
-    <menuitem name="Email Management" sequence="10" 
-      id="menu_email_management"/>
-    <record model="ir.ui.menu-res.group" id="menu_email_management_group_email_user">
-        <field name="menu" ref="menu_email_management"/>
-        <field name="group" ref="group_email_user"/>
-    </record>
-
     <record model="res.group" id="group_email_admin">
       <field name="name">Electronic Mail Administrator</field>
     </record>
@@ -23,6 +16,13 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
     <record model="res.user-res.group" id="user_admin_group_email_user">
       <field name="user" ref="res.user_admin"/>
       <field name="group" ref="group_email_user"/>
+    </record>
+
+    <menuitem name="Email Management" sequence="10" 
+      id="menu_email_management"/>
+    <record model="ir.ui.menu-res.group" id="menu_email_management_group_email_user">
+        <field name="menu" ref="menu_email_management"/>
+        <field name="group" ref="group_email_user"/>
     </record>
 
     <record model="ir.ui.view" id="mailbox_view_tree">
