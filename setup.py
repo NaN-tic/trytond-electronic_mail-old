@@ -33,14 +33,14 @@ setup(name='trytonzz_electronic_mail',
     author='Openlabs Technologies & Consulting (P) LTD',
     author_email='info@openlabs.co.in',
     url='http://openlabs.co.in/',
-    download_url='https://bitbucket.org/zikzakmedia/trytonzz-electronic_mail_template',
-    package_dir={'trytonzz.modules.electronic_mail': '.'},
+    download_url='https://bitbucket.org/zikzakmedia/trytond-electronic_mail_template',
+    package_dir={'trytond.modules.electronic_mail': '.'},
     packages=[
-        'trytonzz.modules.electronic_mail',
-        'trytonzz.modules.electronic_mail.tests',
+        'trytond.modules.electronic_mail',
+        'trytond.modules.electronic_mail.tests',
     ],
     package_data={
-        'trytonzz.modules.electronic_mail': info.get('xml', []) \
+        'trytond.modules.electronic_mail': info.get('xml', []) \
             + ['tryton.cfg', 'locale/*.po', 'icons/*.svg'],
     },
     classifiers=[
@@ -61,9 +61,9 @@ setup(name='trytonzz_electronic_mail',
     install_requires=requires,
     zip_safe=False,
     entry_points="""
-    [trytonzz.modules]
-    electronic_mail = trytonzz.modules.electronic_mail
+    [trytond.modules]
+    electronic_mail = trytond.modules.electronic_mail
     """,
     test_suite='tests',
-    test_loader='trytonzz.test_loader:Loader',
+    test_loader='trytond.test_loader:Loader',
 )
