@@ -54,6 +54,10 @@ msgctxt "field:electronic.mail,flag_seen:"
 msgid "Seen"
 msgstr "Visto"
 
+msgctxt "field:electronic.mail,flag_send:"
+msgid "Sent"
+msgstr "Enviado"
+
 msgctxt "field:electronic.mail,from_:"
 msgid "From"
 msgstr "De"
