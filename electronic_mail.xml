@@ -168,8 +168,6 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
     <record model="ir.action.act_window" id="act_mail_form">
       <field name="name">Emails</field>
       <field name="res_model">electronic.mail</field>
-      <field name="domain">[('template', '=', False)]</field>
-      <field name="context">{'template': False}</field>
     </record>
     <record model="ir.action.act_window.view" id="act_mail_form_view1">
       <field name="sequence" eval="10"/>

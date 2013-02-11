@@ -99,7 +99,6 @@ class ElectronicMail(ModelSQL, ModelView):
     flag_flagged = fields.Boolean('Flagged')
     flag_draft = fields.Boolean('Draft')
     flag_recent = fields.Boolean('Recent')
-    template = fields.Boolean('Template')
     size = fields.Integer('Size')
     mailbox_owner = fields.Function(
         fields.Many2One('res.user', 'Owner'),
@@ -134,10 +133,6 @@ class ElectronicMail(ModelSQL, ModelView):
 
     @staticmethod
     def default_flag_recent():
-        return False
-
-    @staticmethod
-    def default_template():
         return False
 
     @classmethod
