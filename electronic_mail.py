@@ -5,7 +5,6 @@
 from __future__ import with_statement
 
 import os
-import base64
 import re
 from sys import getsizeof
 
@@ -294,9 +293,9 @@ class ElectronicMail(ModelSQL, ModelView):
             'email': mail.as_string(),
             'size': getsizeof(mail.as_string()),
             }
-        create_id = self.create(values)
-        Header.create_from_email(mail, create_id)
-        return create_id
+        email = self.create([values])[0]
+        Header.create_from_email(mail, email)
+        return email
 
     @staticmethod
     def get_email_valid(email):
@@ -337,11 +336,15 @@ class Header(ModelSQL, ModelView):
         :param mail: Email object
         :param mail_id: ID of the email from electronic_mail
         """
+        to_create = []
         for name, value in mail.items():
             values = {
                 'electronic_mail':mail_id,
                 'name':name,
                 'value':value,
                 }
-            self.create(values)
+            to_create.append(values)
+
+        if to_create:
+            self.create(to_create)
         return True
