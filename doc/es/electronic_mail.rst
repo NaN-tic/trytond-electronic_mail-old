@@ -1,6 +1,25 @@
-==================
-Correo electrónico
-==================
+=================================
+SMTP. Envío de correo electrónico
+=================================
+
+.. inheritref:: electronic_mail/electronic_mail:section:mailbox
+
+MailBox
+=======
+
+Directorios virtuales donde se clasificarán los correos electrónicos.
+
+.. inheritref:: electronic_mail/electronic_mail:section:electronic_email
+
+Correo generado
+===============
+
+Dispone en el historial el correo electrónico enviado. El contenido del correo se
+guardará en el directorio físico de la configuración del servidor:
+
+.. code:: python
+
+    <DATA PATH>/<DB NAME>/email
 
 .. inheritref:: electronic_mail/electronic_mail:section:configuration
 
@@ -13,22 +32,3 @@ variable:
 .. code:: python
 
     data_path
-
-.. inheritref:: electronic_mail/electronic_mail:section:mailbox
-
-MailBox
-=======
-
-Directorios virtuales donde se clasificarán los correos electrónicos.
-
-.. inheritref:: electronic_mail/electronic_mail:section:electronic_email
-
-Electronic Email
-================
-
-Información del correo electrónico. El contenido del correo se guardará en el
-directorio físico de la configuración del servidor:
-
-.. code:: python
-
-    <DATA PATH>/<DB NAME>/email
