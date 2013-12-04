@@ -1,6 +1,6 @@
-=================================
-SMTP. Envío de correo electrónico
-=================================
+===========================
+Correo electrónico saliente
+===========================
 
 .. inheritref:: electronic_mail/electronic_mail:section:mailbox
 
