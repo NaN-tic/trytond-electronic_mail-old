@@ -16,6 +16,7 @@ except ImportError:
 from datetime import datetime
 from time import mktime
 from email.utils import parsedate
+from email.header import decode_header
 
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.config import CONFIG
@@ -286,7 +287,7 @@ class ElectronicMail(ModelSQL, ModelView):
             'to': mail.get('to'),
             'cc': mail.get('cc'),
             'bcc': mail.get('bcc'),
-            'subject': mail.get('subject'),
+            'subject': decode_header(mail.get('subject'))[0][0],
             'date': email_date,
             'message_id': mail.get('message-id'),
             'in_reply_to': mail.get('in-reply-to'),
