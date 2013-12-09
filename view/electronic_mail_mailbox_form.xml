@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!-- This file is part electronic_mail module for Tryton.
+The COPYRIGHT file at the top level of this repository contains the full copyright notices and license terms. -->
+<form string="Mailbox">
+    <group colspan="4" id="wrapper">
+        <label name="name"/>
+        <field name="name"/>
+        <label name="user"/>
+        <field name="user"/>
+        <label name="subscribed"/>
+        <field name="subscribed"/>
+    </group>
+    <notebook colspan="4">
+        <page string="Parents" id="parents">
+            <field name="parents"/>
+        </page>
+        <page string="Permissions" id="permissions">
+            <separator name="read_users" colspan="4"/>
+            <field name="read_users"/>
+            <separator name="write_users" colspan="4"/>
+            <field name="write_users"/>
+        </page>
+    </notebook>
+</form>

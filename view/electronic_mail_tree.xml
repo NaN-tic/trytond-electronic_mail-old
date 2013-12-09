@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- This file is part electronic_mail module for Tryton.
+The COPYRIGHT file at the top level of this repository contains the full copyright notices and license terms. -->
+<tree string="Emails">
+    <field name="mailbox"/>
+    <field name="from_"/>
+    <field name="subject"/>
+    <field name="date"/>
+    <field name="flag_send"/>
+    <field name="flag_seen"/>
+    <field name="flag_flagged"/>
+    <field name="flag_answered"/>
+</tree>

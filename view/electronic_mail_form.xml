@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!-- This file is part electronic_mail module for Tryton.
+The COPYRIGHT file at the top level of this repository contains the full copyright notices and license terms. -->
+<form string="Email">
+    <group colspan="4" id="master_fields">
+        <label name="from_"/>
+        <field name="from_"/>
+        <label name="date"/>
+        <field name="date"/>
+        <label name="to"/>
+        <field name="to"/>
+        <label name="in_reply_to"/>
+        <field name="in_reply_to"/>
+        <label name="cc"/>
+        <field name="cc"/>
+        <label name="bcc"/>
+        <field name="bcc"/>
+        <label name="subject"/>
+        <field name="subject"/>
+        <label name="mailbox"/>
+        <field name="mailbox"/>
+    </group>
+    <group colspan="4" col="10" id="send_area">
+        <label name="flag_send"/>
+        <field name="flag_send"/>
+    </group>
+    <group colspan="4" col="10" id="flags_area">
+        <label name="flag_seen"/>
+        <field name="flag_seen"/>
+        <label name="flag_flagged"/>
+        <field name="flag_flagged"/>
+        <label name="flag_answered"/>
+        <field name="flag_answered"/>
+        <label name="flag_draft"/>
+        <field name="flag_draft"/>
+        <label name="flag_recent"/>
+        <field name="flag_recent"/>
+    </group>
+    <separator name="email" colspan="4"/>
+    <field name="email"/>
+</form>

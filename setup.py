@@ -40,7 +40,7 @@ setup(name='trytonzz_electronic_mail',
     ],
     package_data={
         'trytond.modules.electronic_mail': info.get('xml', []) \
-            + ['tryton.cfg', 'locale/*.po', 'icons/*.svg'],
+            + ['tryton.cfg', 'view/*.xml', 'locale/*.po', 'icons/*.svg'],
     },
     classifiers=[
         'Development Status :: 5 - Production/Stable',

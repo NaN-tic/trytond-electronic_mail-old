@@ -26,46 +26,16 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
     </record>
 
     <record model="ir.ui.view" id="mailbox_view_tree">
-      <field name="model">electronic.mail.mailbox</field>
-      <field name="type">tree</field>
-      <field name="arch" type="xml">
-        <![CDATA[
-        <tree string="Mailboxes">
-          <field name="name"/>
-          <field name="user"/>
-        </tree>
-        ]]>
-      </field>
+        <field name="model">electronic.mail.mailbox</field>
+        <field name="type">tree</field>
+        <field name="name">electronic_mail_mailbox_tree</field>
     </record>
     <record model="ir.ui.view" id="mailbox_view_form">
       <field name="model">electronic.mail.mailbox</field>
       <field name="type">form</field>
-      <field name="arch" type="xml">
-      <![CDATA[
-      <form string="Mailbox">
-        <group colspan="4" id="wrapper">
-          <label name="name"/>
-          <field name="name"/>
-          <label name="user"/>
-          <field name="user"/>
-          <label name="subscribed"/>
-          <field name="subscribed"/>
-        </group>
-        <notebook colspan="4">
-          <page string="Parents" id="parents">
-            <field name="parents"/>
-          </page>
-          <page string="Permissions" id="permissions">
-            <separator name="read_users" colspan="4"/>
-            <field name="read_users"/>
-            <separator name="write_users" colspan="4"/>
-            <field name="write_users"/>
-          </page>
-        </notebook>
-      </form>
-      ]]>
-      </field>
+        <field name="name">electronic_mail_mailbox_form</field>
     </record>
+
     <record model="ir.action.act_window" id="act_mailbox_form">
       <field name="name">Mailboxes</field>
       <field name="res_model">electronic.mail.mailbox</field>
@@ -89,69 +59,16 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
     </record>
 
     <record model="ir.ui.view" id="mail_view_tree">
-      <field name="model">electronic.mail</field>
-      <field name="type">tree</field>
-      <field name="arch" type="xml">
-      <![CDATA[
-      <tree string="Emails">
-        <field name="mailbox"/>
-        <field name="from_"/>
-        <field name="subject"/>
-        <field name="date"/>
-        <field name="flag_send"/>
-        <field name="flag_seen"/>
-        <field name="flag_flagged"/>
-        <field name="flag_answered"/>
-      </tree>
-      ]]>
-      </field>
+        <field name="model">electronic.mail</field>
+        <field name="type">tree</field>
+        <field name="name">electronic_mail_tree</field>
     </record>
     <record model="ir.ui.view" id="mail_view_form">
-      <field name="model">electronic.mail</field>
-      <field name="type">form</field>
-      <field name="arch" type="xml">
-      <![CDATA[
-      <form string="Email">
-        <group colspan="4" id="master_fields">
-          <label name="from_"/>
-          <field name="from_"/>
-          <label name="date"/>
-          <field name="date"/>
-          <label name="to"/>
-          <field name="to"/>
-          <label name="in_reply_to"/>
-          <field name="in_reply_to"/>
-          <label name="cc"/>
-          <field name="cc"/>
-          <label name="bcc"/>
-          <field name="bcc"/>
-          <label name="subject"/>
-          <field name="subject"/>
-          <label name="mailbox"/>
-          <field name="mailbox"/>
-        </group>
-        <group colspan="4" col="10" id="send_area">
-          <label name="flag_send"/>
-          <field name="flag_send"/>
-        </group>
-        <group colspan="4" col="10" id="flags_area">
-          <label name="flag_seen"/>
-          <field name="flag_seen"/>
-          <label name="flag_flagged"/>
-          <field name="flag_flagged"/>
-          <label name="flag_answered"/>
-          <field name="flag_answered"/>
-          <label name="flag_draft"/>
-          <field name="flag_draft"/>
-          <label name="flag_recent"/>
-          <field name="flag_recent"/>
-        </group>
-        <separator name="email" colspan="4"/>
-        <field name="email"/>
-      </form>
-      ]]>
-      </field>
+        <field name="model">electronic.mail</field>
+        <field name="type">form</field>
+        <field name="name">electronic_mail_form</field>
     </record>
+
     <record model="ir.action.act_window" id="act_mail_form">
       <field name="name">Emails</field>
       <field name="res_model">electronic.mail</field>
