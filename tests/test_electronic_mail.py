@@ -38,7 +38,6 @@ class ElectronicMailTestCase(unittest.TestCase):
 
         self.Mailbox = POOL.get('electronic.mail.mailbox')
         self.Mail = POOL.get('electronic.mail')
-        self.Header = POOL.get('electronic.mail.header')
         self.ModelData = POOL.get('ir.model.data')
         self.User = POOL.get('res.user')
 

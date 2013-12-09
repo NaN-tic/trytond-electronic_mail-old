@@ -24,7 +24,7 @@ from trytond.transaction import Transaction
 from trytond.pool import Pool
 
 __all__ = ['Mailbox', 'MailboxParent', 'ReadUser', 'WriteUser',
-    'ElectronicMail', 'Header']
+    'ElectronicMail']
 
 class Mailbox(ModelSQL, ModelView):
     "Mailbox"
@@ -88,8 +88,6 @@ class ElectronicMail(ModelSQL, ModelView):
     date = fields.DateTime('Date')
     message_id = fields.Char('Message-ID', help='Unique Message Identifier')
     in_reply_to = fields.Char('In-Reply-To')
-    headers = fields.One2Many(
-        'electronic.mail.header', 'electronic_mail', 'Headers')
     digest = fields.Char('MD5 Digest', size=32)
     collision = fields.Integer('Collision')
     email = fields.Function(fields.Binary('Email'), 'get_email', setter='set_email')
@@ -277,7 +275,6 @@ class ElectronicMail(ModelSQL, ModelView):
         :param mail: email object
         :param mailbox: ID of the mailbox
         """
-        Header = Pool().get('electronic.mail.header')
         email_date = mail.get('date') and datetime.fromtimestamp(
                 mktime(parsedate(mail.get('date'))))
         values = {
@@ -295,7 +292,6 @@ class ElectronicMail(ModelSQL, ModelView):
             'size': getsizeof(mail.as_string()),
             }
         email = self.create([values])[0]
-        Header.create_from_email(mail, email)
         return email
 
     @staticmethod
@@ -320,32 +316,4 @@ class ElectronicMail(ModelSQL, ModelView):
                 if not get_validate_email(email):
                     return False
                     break
-        return True
-
-
-class Header(ModelSQL, ModelView):
-    "Header fields"
-    __name__ = 'electronic.mail.header'
-
-    name = fields.Char('Name', help='Name of Header Field')
-    value = fields.Char('Value', help='Value of Header Field')
-    electronic_mail = fields.Many2One('electronic.mail', 'e-mail')
-
-    @classmethod
-    def create_from_email(self, mail, mail_id):
-        """
-        :param mail: Email object
-        :param mail_id: ID of the email from electronic_mail
-        """
-        to_create = []
-        for name, value in mail.items():
-            values = {
-                'electronic_mail':mail_id,
-                'name':name,
-                'value':value,
-                }
-            to_create.append(values)
-
-        if to_create:
-            self.create(to_create)
         return True

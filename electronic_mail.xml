@@ -88,19 +88,6 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
         <field name="group" ref="group_email_admin"/>
     </record>
 
-    <record model="ir.ui.view" id="headers_view_tree">
-      <field name="model">electronic.mail.header</field>
-      <field name="type">tree</field>
-      <field name="arch" type="xml">
-      <![CDATA[
-        <tree string="Headers">
-          <field name="name"/>
-          <field name="value"/>
-        </tree>
-      ]]>
-      </field>
-    </record>
-
     <record model="ir.ui.view" id="mail_view_tree">
       <field name="model">electronic.mail</field>
       <field name="type">tree</field>

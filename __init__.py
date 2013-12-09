@@ -12,5 +12,4 @@ def register():
         ReadUser,
         WriteUser,
         ElectronicMail,
-        Header,
         module='electronic_mail', type_='model')
