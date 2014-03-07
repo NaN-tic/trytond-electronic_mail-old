@@ -4,7 +4,6 @@
 from __future__ import with_statement
 
 import os
-import re
 from sys import getsizeof
 
 try:
@@ -20,6 +19,14 @@ from email.header import decode_header
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.config import CONFIG
 from trytond.transaction import Transaction
+try:
+    from emailvalid import check_email
+    CHECK_EMAIL = True
+except ImportError:
+    CHECK_EMAIL = False
+    import logging
+    logging.getLogger('Electronic Mail').warning(
+    'Unable to import emailvalid. Email validation disabled.')
 
 __all__ = ['Mailbox', 'MailboxParent', 'ReadUser', 'WriteUser',
     'ElectronicMail']
@@ -292,28 +299,3 @@ class ElectronicMail(ModelSQL, ModelView):
             }
         email = self.create([values])[0]
         return email
-
-    @staticmethod
-    def get_email_valid(email):
-        """Get if email is valid. @ and . characters validation
-        :email: str
-        return: True or False
-        """
-        def get_validate_email(email):
-            #  ! # $ % & ' * + - / = ? ^ _ ` { | } ~
-            if not re.match(r"^[A-Za-z0-9\.!#\$%&'\*\+-/=\?\^_`\{|\}~]+@[A-Za-"
-                    "z0-9\.!#\$%&'\*\+-/=\?\^_`\{|\}~]+\.[a-zA-Z]*$", email):
-                return False
-            return True
-
-        if not email:
-            return False
-
-        email = email.replace(';', ',')  # replace separator emails ; -> ,
-        emails = email.split(',')
-        if len(emails) > 0:
-            for email in emails:
-                if not get_validate_email(email):
-                    return False
-                    break
-        return True
