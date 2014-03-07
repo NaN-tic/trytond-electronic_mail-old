@@ -119,6 +119,21 @@ class ElectronicMail(ModelSQL, ModelView):
     def __setup__(cls):
         super(ElectronicMail, cls).__setup__()
         cls._order.insert(0, ('date', 'DESC'))
+        cls._error_messages.update({
+                'email_invalid':
+                    'Invalid email. Please, check the email before save it.',
+                })
+
+    @classmethod
+    def validate(cls, emails):
+        super(ElectronicMail, cls).validate(emails)
+        if CHECK_EMAIL:
+            for email in emails:
+                if ((email.to and not check_email(email.to)) or
+                        (email.cc and not check_email(email.cc)) or
+                        (email.bcc and not check_email(email.bcc)) or
+                        (email.from_ and not check_email(email.from_))):
+                    cls.raise_user_error('email_invalid')
 
     @staticmethod
     def default_collision():
