@@ -3,10 +3,12 @@
 The COPYRIGHT file at the top level of this repository contains the full
 copyright notices and license terms. -->
 <form string="Electronic Mail Configuration">
-    <label name="sent"/>
-    <field name="sent" colspan="3"/>
     <label name="draft"/>
     <field name="draft" colspan="3"/>
+    <label name="outbox"/>
+    <field name="outbox" colspan="3"/>
+    <label name="sent"/>
+    <field name="sent" colspan="3"/>
     <label name="error"/>
     <field name="error" colspan="3"/>
 </form>

@@ -21,6 +21,9 @@ class ElectronicMailConfiguration(ModelSingleton, ModelSQL, ModelView):
     error = fields.Function(fields.Many2One('electronic.mail.mailbox',
             'Error'),
         'get_fields', setter='set_fields')
+    outbox = fields.Function(fields.Many2One('electronic.mail.mailbox',
+            'Outbox'),
+        'get_fields', setter='set_fields')
 
     @classmethod
     def get_fields(cls, configurations, names):
@@ -88,6 +91,7 @@ class ElectronicMailConfigurationCompany(ModelSQL, ModelView):
     sent = fields.Many2One('electronic.mail.mailbox', 'Sent')
     draft = fields.Many2One('electronic.mail.mailbox', 'Draft')
     error = fields.Many2One('electronic.mail.mailbox', 'Error')
+    outbox = fields.Many2One('electronic.mail.mailbox', 'Outbox')
 
     @classmethod
     def __setup__(cls):
