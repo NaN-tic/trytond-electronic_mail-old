@@ -21,4 +21,6 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <field name="write_users"/>
         </page>
     </notebook>
+    <button name="create_menu" string="Create Menu" icon="tryton-ok"
+        colspan="4"/>
 </form>

@@ -2,29 +2,28 @@
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
 from __future__ import with_statement
-
-import os
+from datetime import datetime
+from email.header import decode_header
+from email.utils import parsedate
 from sys import getsizeof
-
+from time import mktime
+from trytond.config import CONFIG
+from trytond.model import ModelView, ModelSQL, fields
+from trytond.pool import Pool
+from trytond.pyson import Bool, Eval
+from trytond.transaction import Transaction
+import logging
+import os
 try:
     import hashlib
 except ImportError:
     hashlib = None
     import md5
-from datetime import datetime
-from time import mktime
-from email.utils import parsedate
-from email.header import decode_header
-
-from trytond.model import ModelView, ModelSQL, fields
-from trytond.config import CONFIG
-from trytond.transaction import Transaction
 try:
     from emailvalid import check_email
     CHECK_EMAIL = True
 except ImportError:
     CHECK_EMAIL = False
-    import logging
     logging.getLogger('Electronic Mail').warning(
     'Unable to import emailvalid. Email validation disabled.')
 
@@ -46,6 +45,159 @@ class Mailbox(ModelSQL, ModelView):
             'mailbox', 'user', 'Read Users')
     write_users = fields.Many2Many('electronic.mail.mailbox.write.res.user',
             'mailbox', 'user', 'Write Users')
+
+    @classmethod
+    def __setup__(cls):
+        super(Mailbox, cls).__setup__()
+        cls._error_messages.update({
+                'foreign_model_exist': 'You can not delete this mailbox '
+                    'because it has electronic mails.',
+                'menu_exist': 'This mailbox has already a menu.\nPlease, '
+                    'refresh the menu to see it.',
+                })
+        cls._buttons.update({
+                'create_menu': {
+                    'invisible': Bool(Eval('menu')),
+                    },
+                })
+
+    @classmethod
+    def delete(cls, mailboxes):
+        # TODO Add a wizard that pops up a window telling that menu is deleted
+        # and that in order to see it, you must type ALT+T or refresh the menu
+        # by clicking menu User > Refresh Menu
+        pool = Pool()
+        Menu = pool.get('ir.ui.menu')
+        Action = pool.get('ir.action')
+        ActWindow = pool.get('ir.action.act_window')
+        ActionKeyword = pool.get('ir.action.keyword')
+        ActWindowView = pool.get('ir.action.act_window.view')
+
+        act_windows = []
+        actions = []
+        keywords = []
+        menus = []
+        act_window_views = []
+        for mailbox in mailboxes:
+            act_windows.extend(ActWindow.search([
+                    ('res_model', '=', 'electronic.mail'),
+                    ('domain', '=', str([('mailbox', '=', mailbox.id)])),
+                    ]))
+            actions.extend([a_w.action for a_w in act_windows])
+            keywords.extend(ActionKeyword.search([('action', 'in', actions)]))
+            menus.extend([k.model for k in keywords])
+            act_window_views.extend(ActWindowView.search([
+                    ('act_window', 'in', [a_w.id for a_w in act_windows]),
+                    ]))
+
+        ActWindowView.delete(act_window_views)
+        ActWindow.delete(act_windows)
+        ActionKeyword.delete(keywords)
+        Action.delete(actions)
+        Menu.delete(menus)
+        return super(Mailbox, cls).delete(mailboxes)
+
+    @classmethod
+    def write(cls, mailboxes, vals):
+        # TODO Add a wizard that pops up a window telling that menu is updated
+        # and that in order to see it, you must type ALT+T or refresh the menu
+        # by clicking menu User > Refresh Menu
+        if 'name' in vals:
+            pool = Pool()
+            ActWindow = pool.get('ir.action.act_window')
+            Action = pool.get('ir.action')
+            ActionKeyword = pool.get('ir.action.keyword')
+            Menu = pool.get('ir.ui.menu')
+
+            actions = []
+            menus = []
+            for mailbox in mailboxes:
+                act_windows = ActWindow.search([
+                        ('res_model', '=', 'electronic.mail'),
+                        ('domain', '=', str([('mailbox', '=', mailbox.id)])),
+                        ])
+                actions.extend([a_w.action for a_w in act_windows])
+                keywords = ActionKeyword.search([('action', 'in', actions)])
+                menus.extend([k.model for k in keywords])
+            Action.write(actions, {'name': vals['name']})
+            Menu.write(menus, {'name': vals['name']})
+        super(Mailbox, cls).write(mailboxes, vals)
+
+    @classmethod
+    @ModelView.button
+    def create_menu(cls, mailboxes):
+        # TODO Add a wizard that pops up a window telling that menu is created
+        # and that in order to see it, you must type ALT+T or refresh the menu
+        # by clicking menu User > Refresh Menu
+        pool = Pool()
+        ModelData = pool.get('ir.model.data')
+        Menu = pool.get('ir.ui.menu')
+        Action = pool.get('ir.action')
+        ActWindow = pool.get('ir.action.act_window')
+        ActionKeyword = pool.get('ir.action.keyword')
+        ActWindowView = pool.get('ir.action.act_window.view')
+        View = pool.get('ir.ui.view')
+
+        for mailbox in mailboxes:
+            act_windows = ActWindow.search([
+                    ('res_model', '=', 'electronic.mail'),
+                    ('domain', '=', str([('mailbox', '=', mailbox.id)])),
+                    ])
+            actions = [a_w.action for a_w in act_windows]
+            keywords = ActionKeyword.search([('action', 'in', actions)])
+            menus = [k.model for k in keywords]
+        if menus:
+            cls.raise_user_error('menu_exist')
+        data_menu_mailbox, = ModelData.search([
+                ('module', '=', 'electronic_mail'),
+                ('model', '=', 'ir.ui.menu'),
+                ('fs_id', '=', 'menu_mail'),
+                ])
+        menu_mailbox, = Menu.search([
+                ('id', '=', data_menu_mailbox.db_id)
+                ])
+        actions = Action.create([{
+                    'name': mb.name,
+                    'type': 'ir.action.act_window',
+                    } for mb in mailboxes])
+        act_windows = ActWindow.create([{
+                    'res_model': 'electronic.mail',
+                    'domain': str([('mailbox', '=', mb.id)]),
+                    'action': a.id,
+                    }
+                for mb in mailboxes for a in actions if a.name == mb.name])
+        menus = Menu.create([{
+                    'parent': menu_mailbox.id,
+                    'name': mb.name,
+                    'icon': 'tryton-list',
+                    'active': True,
+                    'sequence': 10,
+                    } for mb in mailboxes])
+        ActionKeyword.create([{
+                    'model': 'ir.ui.menu,%s' % m.id,
+                    'action': a_w.id,
+                    'keyword': 'tree_open',
+                    }
+                for mb in mailboxes
+                    for a_w in act_windows
+                        for m in menus
+                            if mb.id == eval(a_w.domain)[0][2]
+                                and m.name == mb.name
+                ])
+        data_views = ModelData.search([
+                ('module', '=', 'electronic_mail'),
+                ('model', '=', 'ir.ui.view'),
+                ['OR',
+                    ('fs_id', '=', 'mail_view_tree'),
+                    ('fs_id', '=', 'mail_view_form'),
+                    ],
+                ])
+        views = View.search([('id', 'in', [v.db_id for v in data_views])])
+        ActWindowView.create([{
+                    'act_window': a_w.id,
+                    'view': v.id,
+                    'sequence': 10 if v.type == 'tree' else 20,
+                    } for a_w in act_windows for v in views])
 
 
 class MailboxParent(ModelSQL):
