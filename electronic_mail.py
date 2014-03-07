@@ -1,7 +1,6 @@
-#This file is part electronic_mail module for Tryton.
-#The COPYRIGHT file at the top level of this repository contains 
-#the full copyright notices and license terms.
-"Electronic Mail"
+# This file is part of electronic_mail module for Tryton.
+# The COPYRIGHT file at the top level of this repository contains
+# the full copyright notices and license terms.
 from __future__ import with_statement
 
 import os
@@ -21,10 +20,10 @@ from email.header import decode_header
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.config import CONFIG
 from trytond.transaction import Transaction
-from trytond.pool import Pool
 
 __all__ = ['Mailbox', 'MailboxParent', 'ReadUser', 'WriteUser',
     'ElectronicMail']
+
 
 class Mailbox(ModelSQL, ModelView):
     "Mailbox"
@@ -34,7 +33,7 @@ class Mailbox(ModelSQL, ModelView):
     user = fields.Many2One('res.user', 'Owner')
     parents = fields.Many2Many(
              'electronic.mail.mailbox.mailbox',
-             'parent', 'child' ,'Parents')
+             'parent', 'child', 'Parents')
     subscribed = fields.Boolean('Subscribed')
     read_users = fields.Many2Many('electronic.mail.mailbox.read.res.user',
             'mailbox', 'user', 'Read Users')
@@ -90,7 +89,8 @@ class ElectronicMail(ModelSQL, ModelView):
     in_reply_to = fields.Char('In-Reply-To')
     digest = fields.Char('MD5 Digest', size=32)
     collision = fields.Integer('Collision')
-    email = fields.Function(fields.Binary('Email'), 'get_email', setter='set_email')
+    email = fields.Function(fields.Binary('Email'), 'get_email',
+        setter='set_email')
     flag_send = fields.Boolean('Sent', readonly=True)
     flag_seen = fields.Boolean('Seen')
     flag_answered = fields.Boolean('Answered')
@@ -179,8 +179,7 @@ class ElectronicMail(ModelSQL, ModelView):
             filename = electronic_mail.digest
             if electronic_mail.collision:
                 filename = filename + '-' + str(electronic_mail.collision)
-            filename = os.path.join(
-                CONFIG['data_path'], db_name, 
+            filename = os.path.join(CONFIG['data_path'], db_name,
                 'email', filename[0:2], filename)
             try:
                 with open(filename, 'rb') as file_p:
@@ -221,7 +220,7 @@ class ElectronicMail(ModelSQL, ModelView):
                 file_p.write(data)
         else:
             # File already exists, may be its the same email data
-            # or maybe different. 
+            # or maybe different.
 
             # Case 1: If different: we have to write file with updated
             # Collission index
@@ -301,17 +300,18 @@ class ElectronicMail(ModelSQL, ModelView):
         return: True or False
         """
         def get_validate_email(email):
-            #  ! # $ % & ' * + - / = ? ^ _ ` { | } ~ 
-            if not re.match(r"^[A-Za-z0-9\.!#\$%&'\*\+-/=\?\^_`\{|\}~]+@[A-Za-z0-9\.!#\$%&'\*\+-/=\?\^_`\{|\}~]+\.[a-zA-Z]*$", email):
+            #  ! # $ % & ' * + - / = ? ^ _ ` { | } ~
+            if not re.match(r"^[A-Za-z0-9\.!#\$%&'\*\+-/=\?\^_`\{|\}~]+@[A-Za-"
+                    "z0-9\.!#\$%&'\*\+-/=\?\^_`\{|\}~]+\.[a-zA-Z]*$", email):
                 return False
             return True
 
         if not email:
             return False
 
-        email = email.replace(';',',') #replace separator emails ; -> ,
+        email = email.replace(';', ',')  # replace separator emails ; -> ,
         emails = email.split(',')
-        if len(emails)>0:
+        if len(emails) > 0:
             for email in emails:
                 if not get_validate_email(email):
                     return False
