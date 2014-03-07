@@ -13,16 +13,17 @@ __all__ = [
 class ElectronicMailConfiguration(ModelSingleton, ModelSQL, ModelView):
     'Electronic Mail Configuration'
     __name__ = 'electronic.mail.configuration'
-    sent = fields.Function(fields.Many2One('electronic.mail.mailbox', 'Sent'),
+    sent = fields.Function(fields.Many2One('electronic.mail.mailbox', 'Sent',
+            required=True),
         'get_fields', setter='set_fields')
     draft = fields.Function(fields.Many2One('electronic.mail.mailbox',
-            'Draft'),
+            'Draft', required=True),
         'get_fields', setter='set_fields')
     error = fields.Function(fields.Many2One('electronic.mail.mailbox',
-            'Error'),
+            'Error', required=True),
         'get_fields', setter='set_fields')
     outbox = fields.Function(fields.Many2One('electronic.mail.mailbox',
-            'Outbox'),
+            'Outbox', required=True),
         'get_fields', setter='set_fields')
 
     @classmethod
