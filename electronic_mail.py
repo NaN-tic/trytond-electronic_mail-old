@@ -466,3 +466,13 @@ class ElectronicMail(ModelSQL, ModelView):
             }
         email = self.create([values])[0]
         return email
+
+    @classmethod
+    def validate_emails(cls, emails):
+        '''Validate Emails is a email
+        :param emails: list strings
+        '''
+        if CHECK_EMAIL:
+            for email in emails:
+                if not check_email(email):
+                    cls.raise_user_error('email_invalid')
