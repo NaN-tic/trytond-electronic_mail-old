@@ -476,3 +476,4 @@ class ElectronicMail(ModelSQL, ModelView):
             for email in emails:
                 if not check_email(email):
                     cls.raise_user_error('email_invalid')
+        return True
