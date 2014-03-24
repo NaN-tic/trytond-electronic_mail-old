@@ -62,10 +62,6 @@ msgctxt "field:electronic.mail,from_:"
 msgid "From"
 msgstr "De"
 
-msgctxt "field:electronic.mail,headers:"
-msgid "Headers"
-msgstr "Capçaleres"
-
 msgctxt "field:electronic.mail,id:"
 msgid "ID"
 msgstr "ID"
@@ -119,42 +115,6 @@ msgid "Write Date"
 msgstr "Data modificació"
 
 msgctxt "field:electronic.mail,write_uid:"
-msgid "Write User"
-msgstr "Usuari modificació"
-
-msgctxt "field:electronic.mail.header,create_date:"
-msgid "Create Date"
-msgstr "Data creació"
-
-msgctxt "field:electronic.mail.header,create_uid:"
-msgid "Create User"
-msgstr "Crear usuari"
-
-msgctxt "field:electronic.mail.header,electronic_mail:"
-msgid "e-mail"
-msgstr "e-mail"
-
-msgctxt "field:electronic.mail.header,id:"
-msgid "ID"
-msgstr "ID"
-
-msgctxt "field:electronic.mail.header,name:"
-msgid "Name"
-msgstr "Nom"
-
-msgctxt "field:electronic.mail.header,rec_name:"
-msgid "Name"
-msgstr "Nom"
-
-msgctxt "field:electronic.mail.header,value:"
-msgid "Value"
-msgstr "Valor"
-
-msgctxt "field:electronic.mail.header,write_date:"
-msgid "Write Date"
-msgstr "Data modificació"
-
-msgctxt "field:electronic.mail.header,write_uid:"
 msgid "Write User"
 msgstr "Usuari modificació"
 
@@ -306,21 +266,9 @@ msgctxt "help:electronic.mail,message_id:"
 msgid "Unique Message Identifier"
 msgstr "Identificador únic del missatge"
 
-msgctxt "help:electronic.mail.header,name:"
-msgid "Name of Header Field"
-msgstr "Nom camp capçalera"
-
-msgctxt "help:electronic.mail.header,value:"
-msgid "Value of Header Field"
-msgstr "Valor del camp de la capçalera"
-
 msgctxt "model:electronic.mail,name:"
 msgid "E-mail"
 msgstr "E-mail"
-
-msgctxt "model:electronic.mail.header,name:"
-msgid "Header fields"
-msgstr "Camps de la capçalera"
 
 msgctxt "model:electronic.mail.mailbox,name:"
 msgid "Mailbox"
@@ -347,7 +295,7 @@ msgid "Mailboxes"
 msgstr "Bústies de correu"
 
 msgctxt "model:ir.ui.menu,name:menu_email_management"
-msgid "Email Management"
+msgid "Emails"
 msgstr "Correu electrònic"
 
 msgctxt "model:ir.ui.menu,name:menu_mail"
@@ -366,9 +314,9 @@ msgctxt "model:res.group,name:group_email_user"
 msgid "Electronic Mail User"
 msgstr "Usuari correu electrònic"
 
-msgctxt "view:electronic.mail.header:"
-msgid "Headers"
-msgstr "Capçaleres"
+msgctxt "view:electronic.mail.mailbox:"
+msgid "Create Menu"
+msgstr "Crea menú"
 
 msgctxt "view:electronic.mail.mailbox:"
 msgid "Mailbox"

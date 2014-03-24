@@ -62,10 +62,6 @@ msgctxt "field:electronic.mail,from_:"
 msgid "From"
 msgstr "De"
 
-msgctxt "field:electronic.mail,headers:"
-msgid "Headers"
-msgstr "Cabezeras"
-
 msgctxt "field:electronic.mail,id:"
 msgid "ID"
 msgstr "ID"
@@ -110,10 +106,6 @@ msgctxt "field:electronic.mail,subject:"
 msgid "Subject"
 msgstr "Asunto"
 
-msgctxt "field:electronic.mail,template:"
-msgid "Template"
-msgstr "Plantilla"
-
 msgctxt "field:electronic.mail,to:"
 msgid "To"
 msgstr "A"
@@ -123,42 +115,6 @@ msgid "Write Date"
 msgstr "Fecha modificación"
 
 msgctxt "field:electronic.mail,write_uid:"
-msgid "Write User"
-msgstr "Usuario modificación"
-
-msgctxt "field:electronic.mail.header,create_date:"
-msgid "Create Date"
-msgstr "Fecha creación"
-
-msgctxt "field:electronic.mail.header,create_uid:"
-msgid "Create User"
-msgstr "Usuario creación"
-
-msgctxt "field:electronic.mail.header,electronic_mail:"
-msgid "e-mail"
-msgstr "e-mail"
-
-msgctxt "field:electronic.mail.header,id:"
-msgid "ID"
-msgstr "ID"
-
-msgctxt "field:electronic.mail.header,name:"
-msgid "Name"
-msgstr "Nombre"
-
-msgctxt "field:electronic.mail.header,rec_name:"
-msgid "Name"
-msgstr "Nombre"
-
-msgctxt "field:electronic.mail.header,value:"
-msgid "Value"
-msgstr "Valor"
-
-msgctxt "field:electronic.mail.header,write_date:"
-msgid "Write Date"
-msgstr "Fecha modificación"
-
-msgctxt "field:electronic.mail.header,write_uid:"
 msgid "Write User"
 msgstr "Usuario modificación"
 
@@ -310,21 +266,9 @@ msgctxt "help:electronic.mail,message_id:"
 msgid "Unique Message Identifier"
 msgstr "Identificador único mensaje"
 
-msgctxt "help:electronic.mail.header,name:"
-msgid "Name of Header Field"
-msgstr "Nombre del campo de la cabezera"
-
-msgctxt "help:electronic.mail.header,value:"
-msgid "Value of Header Field"
-msgstr "Valor campo cabezera"
-
 msgctxt "model:electronic.mail,name:"
 msgid "E-mail"
 msgstr "E-mail"
-
-msgctxt "model:electronic.mail.header,name:"
-msgid "Header fields"
-msgstr "Campos de la cabazera"
 
 msgctxt "model:electronic.mail.mailbox,name:"
 msgid "Mailbox"
@@ -351,7 +295,7 @@ msgid "Mailboxes"
 msgstr "Buzones correo"
 
 msgctxt "model:ir.ui.menu,name:menu_email_management"
-msgid "Email Management"
+msgid "Emails"
 msgstr "Correo electrónico"
 
 msgctxt "model:ir.ui.menu,name:menu_mail"
@@ -370,9 +314,9 @@ msgctxt "model:res.group,name:group_email_user"
 msgid "Electronic Mail User"
 msgstr "Usuario correo electrónico"
 
-msgctxt "view:electronic.mail.header:"
-msgid "Headers"
-msgstr "Cabezeras"
+msgctxt "view:electronic.mail.mailbox:"
+msgid "Create Menu"
+msgstr "Crear menú"
 
 msgctxt "view:electronic.mail.mailbox:"
 msgid "Mailbox"
