@@ -10,7 +10,6 @@ from .configuration import *
 def register():
     Pool.register(
         Mailbox,
-        MailboxParent,
         ReadUser,
         WriteUser,
         ElectronicMail,

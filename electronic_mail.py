@@ -27,8 +27,7 @@ except ImportError:
     logging.getLogger('Electronic Mail').warning(
     'Unable to import emailvalid. Email validation disabled.')
 
-__all__ = ['Mailbox', 'MailboxParent', 'ReadUser', 'WriteUser',
-    'ElectronicMail']
+__all__ = ['Mailbox', 'ReadUser', 'WriteUser', 'ElectronicMail']
 
 
 class Mailbox(ModelSQL, ModelView):
@@ -37,10 +36,6 @@ class Mailbox(ModelSQL, ModelView):
 
     name = fields.Char('Name', required=True)
     user = fields.Many2One('res.user', 'Owner')
-    parents = fields.Many2Many(
-             'electronic.mail.mailbox.mailbox',
-             'parent', 'child', 'Parents')
-    subscribed = fields.Boolean('Subscribed')
     read_users = fields.Many2Many('electronic.mail.mailbox.read.res.user',
             'mailbox', 'user', 'Read Users')
     write_users = fields.Many2Many('electronic.mail.mailbox.write.res.user',
@@ -198,16 +193,6 @@ class Mailbox(ModelSQL, ModelView):
                     'view': v.id,
                     'sequence': 10 if v.type == 'tree' else 20,
                     } for a_w in act_windows for v in views])
-
-
-class MailboxParent(ModelSQL):
-    'Mailbox - parent - Mailbox'
-    __name__ = 'electronic.mail.mailbox.mailbox'
-
-    parent = fields.Many2One('electronic.mail.mailbox', 'Parent',
-            ondelete='CASCADE', required=True, select=1)
-    child = fields.Many2One('electronic.mail.mailbox', 'Child',
-            ondelete='CASCADE', required=True, select=1)
 
 
 class ReadUser(ModelSQL):

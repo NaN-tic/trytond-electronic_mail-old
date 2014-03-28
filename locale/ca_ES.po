@@ -238,10 +238,6 @@ msgctxt "field:electronic.mail.mailbox,name:"
 msgid "Name"
 msgstr "Nom"
 
-msgctxt "field:electronic.mail.mailbox,parents:"
-msgid "Parents"
-msgstr "Pares"
-
 msgctxt "field:electronic.mail.mailbox,read_users:"
 msgid "Read Users"
 msgstr "Usuaris lectura"
@@ -249,10 +245,6 @@ msgstr "Usuaris lectura"
 msgctxt "field:electronic.mail.mailbox,rec_name:"
 msgid "Name"
 msgstr "Nom"
-
-msgctxt "field:electronic.mail.mailbox,subscribed:"
-msgid "Subscribed"
-msgstr "Subscripció"
 
 msgctxt "field:electronic.mail.mailbox,user:"
 msgid "Owner"
@@ -268,38 +260,6 @@ msgstr "Usuari modificació"
 
 msgctxt "field:electronic.mail.mailbox,write_users:"
 msgid "Write Users"
-msgstr "Usuari modificació"
-
-msgctxt "field:electronic.mail.mailbox.mailbox,child:"
-msgid "Child"
-msgstr "CC"
-
-msgctxt "field:electronic.mail.mailbox.mailbox,create_date:"
-msgid "Create Date"
-msgstr "Data creació"
-
-msgctxt "field:electronic.mail.mailbox.mailbox,create_uid:"
-msgid "Create User"
-msgstr "Usuari creació"
-
-msgctxt "field:electronic.mail.mailbox.mailbox,id:"
-msgid "ID"
-msgstr "Identificador"
-
-msgctxt "field:electronic.mail.mailbox.mailbox,parent:"
-msgid "Parent"
-msgstr "Pare"
-
-msgctxt "field:electronic.mail.mailbox.mailbox,rec_name:"
-msgid "Name"
-msgstr "Nom"
-
-msgctxt "field:electronic.mail.mailbox.mailbox,write_date:"
-msgid "Write Date"
-msgstr "Data modificació"
-
-msgctxt "field:electronic.mail.mailbox.mailbox,write_uid:"
-msgid "Write User"
 msgstr "Usuari modificació"
 
 msgctxt "field:electronic.mail.mailbox.read.res.user,create_date:"
@@ -386,10 +346,6 @@ msgctxt "model:electronic.mail.mailbox,name:"
 msgid "Mailbox"
 msgstr "Bústia de correu"
 
-msgctxt "model:electronic.mail.mailbox.mailbox,name:"
-msgid "Mailbox - parent - Mailbox"
-msgstr "Bústia de correu - pare - Bústia de correu"
-
 msgctxt "model:electronic.mail.mailbox.read.res.user,name:"
 msgid "Electronic Mail - read - User"
 msgstr "Correu electrònic - lectura - Usuari"
@@ -453,10 +409,6 @@ msgstr "Bústia de correu"
 msgctxt "view:electronic.mail.mailbox:"
 msgid "Mailboxes"
 msgstr "Bústies de correu"
-
-msgctxt "view:electronic.mail.mailbox:"
-msgid "Parents"
-msgstr "Pares"
 
 msgctxt "view:electronic.mail.mailbox:"
 msgid "Permissions"
