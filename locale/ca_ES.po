@@ -40,7 +40,7 @@ msgstr "Data creació"
 
 msgctxt "field:electronic.mail,create_uid:"
 msgid "Create User"
-msgstr "Usuari de creació"
+msgstr "Usuari creació"
 
 msgctxt "field:electronic.mail,date:"
 msgid "Date"
@@ -140,11 +140,11 @@ msgstr "Usuari modificació"
 
 msgctxt "field:electronic.mail.configuration,create_date:"
 msgid "Create Date"
-msgstr "Data de creació"
+msgstr "Data creació"
 
 msgctxt "field:electronic.mail.configuration,create_uid:"
 msgid "Create User"
-msgstr "Usuari de creació"
+msgstr "Usuari creació"
 
 msgctxt "field:electronic.mail.configuration,draft:"
 msgid "Draft"
@@ -184,11 +184,11 @@ msgstr "Empresa"
 
 msgctxt "field:electronic.mail.configuration.company,create_date:"
 msgid "Create Date"
-msgstr "Data de creació"
+msgstr "Data creació"
 
 msgctxt "field:electronic.mail.configuration.company,create_uid:"
 msgid "Create User"
-msgstr "Usuari de creació"
+msgstr "Usuari creació"
 
 msgctxt "field:electronic.mail.configuration.company,draft:"
 msgid "Draft"
@@ -228,7 +228,7 @@ msgstr "Data creació"
 
 msgctxt "field:electronic.mail.mailbox,create_uid:"
 msgid "Create User"
-msgstr "Usuari de creació"
+msgstr "Usuari creació"
 
 msgctxt "field:electronic.mail.mailbox,id:"
 msgid "ID"
@@ -280,7 +280,7 @@ msgstr "Data creació"
 
 msgctxt "field:electronic.mail.mailbox.mailbox,create_uid:"
 msgid "Create User"
-msgstr "Usuari de creació"
+msgstr "Usuari creació"
 
 msgctxt "field:electronic.mail.mailbox.mailbox,id:"
 msgid "ID"
@@ -308,7 +308,7 @@ msgstr "Data creació"
 
 msgctxt "field:electronic.mail.mailbox.read.res.user,create_uid:"
 msgid "Create User"
-msgstr "Usuari de creació"
+msgstr "Usuari creació"
 
 msgctxt "field:electronic.mail.mailbox.read.res.user,id:"
 msgid "ID"
@@ -340,7 +340,7 @@ msgstr "Data creació"
 
 msgctxt "field:electronic.mail.mailbox.write.res.user,create_uid:"
 msgid "Create User"
-msgstr "Usuari de creació"
+msgstr "Usuari creació"
 
 msgctxt "field:electronic.mail.mailbox.write.res.user,id:"
 msgid "ID"
