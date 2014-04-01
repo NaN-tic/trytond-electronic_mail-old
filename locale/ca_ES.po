@@ -28,7 +28,7 @@ msgstr "BCC"
 
 msgctxt "field:electronic.mail,cc:"
 msgid "CC"
-msgstr "Fill"
+msgstr "CC"
 
 msgctxt "field:electronic.mail,collision:"
 msgid "Collision"
