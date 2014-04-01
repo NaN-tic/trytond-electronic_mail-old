@@ -427,11 +427,12 @@ class ElectronicMail(ModelSQL, ModelView):
         return digest
 
     @classmethod
-    def create_from_email(self, mail, mailbox):
+    def create_from_email(self, mail, mailbox, context={}):
         """
         Creates a mail record from a given mail
         :param mail: email object
         :param mailbox: ID of the mailbox
+        :param context: dict
         """
         email_date = mail.get('date') and datetime.fromtimestamp(
                 mktime(parsedate(mail.get('date'))))
@@ -441,7 +442,7 @@ class ElectronicMail(ModelSQL, ModelView):
             'sender': mail.get('sender'),
             'to': mail.get('to'),
             'cc': mail.get('cc'),
-            'bcc': mail.get('bcc'),
+            'bcc': context.get('bcc'),
             'subject': decode_header(mail.get('subject'))[0][0],
             'date': email_date,
             'message_id': mail.get('message-id'),
