@@ -93,30 +93,35 @@ class Mailbox(ModelSQL, ModelView):
         return super(Mailbox, cls).delete(mailboxes)
 
     @classmethod
-    def write(cls, mailboxes, vals):
+    def write(cls, *args):
         # TODO Add a wizard that pops up a window telling that menu is updated
         # and that in order to see it, you must type ALT+T or refresh the menu
         # by clicking menu User > Refresh Menu
-        if 'name' in vals:
-            pool = Pool()
-            ActWindow = pool.get('ir.action.act_window')
-            Action = pool.get('ir.action')
-            ActionKeyword = pool.get('ir.action.keyword')
-            Menu = pool.get('ir.ui.menu')
+        acts = iter(args)
+        args = []
+        for mailboxes, values in zip(acts, acts):
+            if 'name' in values:
+                pool = Pool()
+                ActWindow = pool.get('ir.action.act_window')
+                Action = pool.get('ir.action')
+                ActionKeyword = pool.get('ir.action.keyword')
+                Menu = pool.get('ir.ui.menu')
 
-            actions = []
-            menus = []
-            for mailbox in mailboxes:
-                act_windows = ActWindow.search([
-                        ('res_model', '=', 'electronic.mail'),
-                        ('domain', '=', str([('mailbox', '=', mailbox.id)])),
-                        ])
-                actions.extend([a_w.action for a_w in act_windows])
-                keywords = ActionKeyword.search([('action', 'in', actions)])
-                menus.extend([k.model for k in keywords])
-            Action.write(actions, {'name': vals['name']})
-            Menu.write(menus, {'name': vals['name']})
-        super(Mailbox, cls).write(mailboxes, vals)
+                actions = []
+                menus = []
+                for mailbox in mailboxes:
+                    act_windows = ActWindow.search([
+                            ('res_model', '=', 'electronic.mail'),
+                            ('domain', '=', str([
+                                        ('mailbox', '=', mailbox.id)])),
+                            ])
+                    actions.extend([a_w.action for a_w in act_windows])
+                    keywords = ActionKeyword.search([
+                            ('action', 'in', actions)])
+                    menus.extend([k.model for k in keywords])
+                Action.write(actions, {'name': values['name']})
+                Menu.write(menus, {'name': values['name']})
+        super(Mailbox, cls).write(*args)
 
     @classmethod
     @ModelView.button
