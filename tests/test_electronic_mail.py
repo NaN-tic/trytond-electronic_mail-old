@@ -55,7 +55,7 @@ class ElectronicMailTestCase(unittest.TestCase):
             'login': name,
             'name': name,
             'password': name,
-            'groups': [('set', [group_email_admin_id, group_email_user_id])]
+            'groups': [('add', [group_email_admin_id, group_email_user_id])]
             }])[0]
 
     def create_users(self, no_of_sets=1):
@@ -97,8 +97,8 @@ class ElectronicMailTestCase(unittest.TestCase):
                 {
                     'name': 'Parent Mailbox',
                     'user': user_set_1[0],
-                    'read_users': [('set', [user_set_1[1]])],
-                    'write_users': [('set', [user_set_1[2]])],
+                    'read_users': [('add', [user_set_1[1]])],
+                    'write_users': [('add', [user_set_1[2]])],
                     }])
 
             # Create a mailbox 2 with RW users of set 1 + set 2
@@ -106,8 +106,8 @@ class ElectronicMailTestCase(unittest.TestCase):
                 {
                     'name': 'Child Mailbox',
                     'user': user_set_2[0],
-                    'read_users': [('set', [user_set_1[1], user_set_2[1]])],
-                    'write_users': [('set', [user_set_1[2], user_set_2[2]])],
+                    'read_users': [('add', [user_set_1[1], user_set_2[1]])],
+                    'write_users': [('add', [user_set_1[2], user_set_2[2]])],
                     }])
 
             # Directly test the mailboxes each user has access to
@@ -145,8 +145,8 @@ class ElectronicMailTestCase(unittest.TestCase):
                 {
                     'name': 'Mailbox',
                     'user': user_o,
-                    'read_users': [('set', [user_r])],
-                    'write_users': [('set', [user_w])],
+                    'read_users': [('add', [user_r])],
+                    'write_users': [('add', [user_w])],
                     }])[0]
 
             # Raise exception when writing a mail with the read user
@@ -214,8 +214,8 @@ class ElectronicMailTestCase(unittest.TestCase):
                 {
                     'name': 'Mailbox',
                     'user': USER,
-                    'read_users': [('set', [USER])],
-                    'write_users': [('set', [USER])],
+                    'read_users': [('add', [USER])],
+                    'write_users': [('add', [USER])],
                     }])[0]
             mail = self.Mail.create_from_email(message, mailbox)
 
