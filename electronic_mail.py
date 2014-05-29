@@ -198,6 +198,7 @@ class Mailbox(ModelSQL, ModelView):
                     'view': v.id,
                     'sequence': 10 if v.type == 'tree' else 20,
                     } for a_w in act_windows for v in views])
+        return 'reload menu'
 
 
 class ReadUser(ModelSQL):
