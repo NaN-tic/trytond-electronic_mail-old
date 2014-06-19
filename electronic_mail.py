@@ -98,7 +98,6 @@ class Mailbox(ModelSQL, ModelView):
         # and that in order to see it, you must type ALT+T or refresh the menu
         # by clicking menu User > Refresh Menu
         acts = iter(args)
-        args = []
         for mailboxes, values in zip(acts, acts):
             if 'name' in values:
                 pool = Pool()
