@@ -263,7 +263,8 @@ class ElectronicMail(ModelSQL, ModelView):
         cls._order.insert(0, ('date', 'DESC'))
         cls._error_messages.update({
                 'email_invalid':
-                    'Invalid email. Please, check the email before save it.',
+                    'eMail %s invalid. '
+                    'Please, check the email before save it.',
                 })
 
     @classmethod
@@ -466,5 +467,6 @@ class ElectronicMail(ModelSQL, ModelView):
         if CHECK_EMAIL:
             for email in emails:
                 if not check_email(email):
-                    cls.raise_user_error('email_invalid')
+                    cls.raise_user_error('email_invalid',
+                        error_args=(email,))
         return True
