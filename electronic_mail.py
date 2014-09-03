@@ -279,6 +279,7 @@ class ElectronicMail(ModelSQL, ModelView):
     email_file = fields.Function(fields.Binary('Email File'), 'get_email',
         setter='set_email')
     flag_send = fields.Boolean('Sent', readonly=True)
+    flag_received = fields.Boolean('Received', readonly=True)
     flag_seen = fields.Boolean('Seen')
     flag_answered = fields.Boolean('Answered')
     flag_flagged = fields.Boolean('Flagged')
