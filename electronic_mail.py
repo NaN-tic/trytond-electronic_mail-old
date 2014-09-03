@@ -3,8 +3,6 @@
 # the full copyright notices and license terms.
 from __future__ import with_statement
 from datetime import datetime
-from email.header import decode_header
-from email.utils import parsedate
 from sys import getsizeof
 from time import mktime
 from trytond.config import CONFIG
@@ -12,8 +10,13 @@ from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import Pool
 from trytond.pyson import Bool, Eval
 from trytond.transaction import Transaction
+from email import message_from_string
+from email.utils import parsedate
+from email.header import decode_header, make_header
 import logging
 import os
+import chardet
+import mimetypes
 try:
     import hashlib
 except ImportError:
@@ -26,6 +29,34 @@ except ImportError:
     CHECK_EMAIL = False
     logging.getLogger('Electronic Mail').warning(
     'Unable to import emailvalid. Email validation disabled.')
+
+
+def _make_header(data, charset='utf-8'):
+    return str(make_header([(data, charset)]))
+
+def _decode_header(data):
+    if data is None:
+        return
+    decoded_headers = decode_header(data)
+    headers = []
+    for decoded_str, charset in decoded_headers:
+        if charset:
+            headers.append(unicode(decoded_str, charset))
+        else:
+            headers.append(unicode(decoded_str))
+    return " ".join(headers)
+
+def _decode_body(part):
+    charset = str(part.get_content_charset())
+    payload = part.get_payload(decode=True)
+    if not charset or charset == 'None':
+        charset = chardet.detect(payload).get('encoding')
+    return payload.decode(charset).strip()
+
+def msg_from_string(buffer_):
+    " Convert mail file (buffer) to Email class"
+    return message_from_string(buffer_)
+
 
 __all__ = ['Mailbox', 'ReadUser', 'WriteUser', 'ElectronicMail']
 
@@ -234,11 +265,18 @@ class ElectronicMail(ModelSQL, ModelView):
     bcc = fields.Char('BCC')
     subject = fields.Char('Subject')
     date = fields.DateTime('Date')
+    body_html = fields.Function(fields.Text('Body HTML'), 'get_email')
+    body_plain = fields.Function(fields.Text('Body Plain'), 'get_email')
+    deliveredto = fields.Char('Deliveret-To')
+    reference = fields.Char('References')
+    reply_to = fields.Char('Reply-To')
+    num_attach = fields.Function(fields.Integer('Number of attachments'),
+        'get_email')
     message_id = fields.Char('Message-ID', help='Unique Message Identifier')
     in_reply_to = fields.Char('In-Reply-To')
     digest = fields.Char('MD5 Digest', size=32)
     collision = fields.Integer('Collision')
-    email = fields.Function(fields.Binary('Email'), 'get_email',
+    email_file = fields.Function(fields.Binary('Email File'), 'get_email',
         setter='set_email')
     flag_send = fields.Boolean('Sent', readonly=True)
     flag_seen = fields.Boolean('Seen')
@@ -307,6 +345,83 @@ class ElectronicMail(ModelSQL, ModelView):
             res[mail.id] = '%s (ID: %s)' % (mail.subject, mail.id)
         return res
 
+    def get_body(self, msg):
+        """Returns the email body
+        """
+        maintype_text = {
+            'body_plain': "",
+            'body_html': ""
+        }
+        maintype_multipart = maintype_text.copy()
+        if msg:
+            if not msg.is_multipart():
+                decode_body = _decode_body(msg)
+                if msg.get_content_subtype() == "html":
+                    maintype_text['body_html'] = decode_body
+                else:
+                    maintype_text['body_plain'] = decode_body
+            else:
+                for part in msg.walk():
+                    maintype = part.get_content_maintype()
+                    if maintype == 'text':
+                        decode_body = _decode_body(part)
+                        if part.get_content_subtype() == "html":
+                            maintype_text['body_html'] = decode_body
+                        else:
+                            maintype_text['body_plain'] = decode_body
+                    if maintype_text['body_plain'] and maintype_text['body_html']:
+                        break
+                    if maintype == 'multipart':
+                        for p in part.get_payload():
+                            if p.get_content_maintype() == 'text':
+                                decode_body = _decode_body(p)
+                                if p.get_content_subtype() == 'html':
+                                    maintype_multipart['body_html'] = decode_body
+                                else:
+                                    maintype_multipart['body_plain'] = decode_body
+                    elif maintype != 'multipart' and not part.get_filename():
+                        decode_body = _decode_body(part)
+                        if not maintype_multipart['body_plain']:
+                            maintype_multipart['body_plain'] = decode_body
+                        if not maintype_multipart['body_html']:
+                            maintype_multipart['body_html'] = decode_body
+                if not maintype_text['body_plain']:
+                    maintype_text['body_plain'] = maintype_multipart['body_plain']
+                if not maintype_text['body_html']:
+                    maintype_text['body_html'] = maintype_multipart['body_html']
+        return maintype_text
+
+    @staticmethod
+    def get_attachments(msg):
+        attachments = []
+        if msg:
+            counter = 1
+            for part in msg.walk():
+                if part.get_content_maintype() == 'multipart':
+                    continue
+                if part.get('Content-Disposition') is None:
+                    continue
+                if part.get_filename():
+                    filename = part.get_filename()
+                    if not filename:
+                        ext = mimetypes.guess_extension(part.get_content_type())
+                        if not ext:
+                            # Use a generic bag-of-bits extension
+                            ext = '.bin'
+                        filename = 'part-%03d%s' % (counter, ext)
+                    counter += 1
+
+                    data = part.get_payload(decode=True)
+                    content_type = part.get_content_type()
+                    if not data:
+                        continue
+                    attachments.append({
+                            'filename': filename,
+                            'data': data,
+                            'content_type': content_type,
+                            })
+        return attachments
+
     @classmethod
     def get_mailbox_owner(cls, records, name):
         "Returns owner of mailbox"
@@ -325,11 +440,11 @@ class ElectronicMail(ModelSQL, ModelView):
         return res
 
     @classmethod
-    def search_mailbox_owner(self, name, clause):
+    def search_mailbox_owner(cls, name, clause):
         return [('mailbox.user',) + clause[1:]]
 
     @classmethod
-    def search_mailbox_users(self, name, clause):
+    def search_mailbox_users(cls, name, clause):
         return [('mailbox.' + name[8:],) + clause[1:]]
 
     @staticmethod
@@ -353,10 +468,20 @@ class ElectronicMail(ModelSQL, ModelView):
                 pass
         return value
 
-    def get_email(self, name):
-        """Fetches email from the data_path as email object
-        """
-        return self._get_email(self) or False
+    @classmethod
+    def get_email(cls, mails, names):
+        result = {}
+        for fname in ['body_plain', 'body_html', 'num_attach', 'email_file']:
+            result[fname] = {}
+        for mail in mails:
+            email_file = cls._get_email(mail) or False
+            result['email_file'][mail.id] = email_file
+            email = msg_from_string(email_file)
+            body = cls.get_body(mail, email)
+            result['body_plain'][mail.id] = body.get('body_plain')
+            result['body_html'][mail.id] = body.get('body_html')
+            result['num_attach'][mail.id] = len(cls.get_attachments(email))
+        return result
 
     @classmethod
     def set_email(cls, records, name, data):
@@ -433,30 +558,35 @@ class ElectronicMail(ModelSQL, ModelView):
         return digest
 
     @classmethod
-    def create_from_email(self, mail, mailbox, context={}):
+    def create_from_email(cls, mail, mailbox, context={}):
         """
         Creates a mail record from a given mail
         :param mail: email object
         :param mailbox: ID of the mailbox
         :param context: dict
         """
-        email_date = mail.get('date') and datetime.fromtimestamp(
-                mktime(parsedate(mail.get('date'))))
+        email_date = (_decode_header(mail.get('date', "")) and
+            datetime.fromtimestamp(
+                mktime(parsedate(mail.get('date')))))
         values = {
             'mailbox': mailbox,
-            'from_': mail.get('from'),
-            'sender': mail.get('sender'),
-            'to': mail.get('to'),
-            'cc': mail.get('cc'),
-            'bcc': context.get('bcc'),
-            'subject': decode_header(mail.get('subject'))[0][0],
+            'from_': _decode_header(mail.get('from')),
+            'sender': _decode_header(mail.get('sender')),
+            'to': _decode_header(mail.get('to')),
+            'cc': _decode_header(mail.get('cc')),
+            'bcc': _decode_header(mail.get('bcc')),
+            'subject': _decode_header(mail.get('subject')),
             'date': email_date,
-            'message_id': mail.get('message-id'),
-            'in_reply_to': mail.get('in-reply-to'),
-            'email': mail.as_string(),
-            'size': getsizeof(mail.as_string()),
+            'message_id': _decode_header(mail.get('message-id')),
+            'in_reply_to': _decode_header(mail.get('in-reply-to')),
+            'deliveredto': _decode_header(mail.get('delivered-to')),
+            'reference': _decode_header(mail.get('references')),
+            'reply_to': _decode_header(mail.get('reply-to')),
+            'email_file': mail.__str__(),
+            'size': getsizeof(mail.__str__()),
             }
-        email = self.create([values])[0]
+
+        email = cls.create([values])[0]
         return email
 
     @classmethod
