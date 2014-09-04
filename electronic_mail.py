@@ -11,7 +11,7 @@ from trytond.pool import Pool
 from trytond.pyson import Bool, Eval
 from trytond.transaction import Transaction
 from email import message_from_string
-from email.utils import parsedate
+from email.utils import parsedate, parseaddr
 from email.header import decode_header, make_header
 import logging
 import os
@@ -301,9 +301,7 @@ class ElectronicMail(ModelSQL, ModelView):
         super(ElectronicMail, cls).__setup__()
         cls._order.insert(0, ('date', 'DESC'))
         cls._error_messages.update({
-                'email_invalid':
-                    'eMail %s invalid. '
-                    'Please, check the email before save it.',
+                'email_invalid': ('Invalid email "%s".'),
                 })
 
     @classmethod
@@ -311,11 +309,14 @@ class ElectronicMail(ModelSQL, ModelView):
         super(ElectronicMail, cls).validate(emails)
         if CHECK_EMAIL:
             for email in emails:
-                if ((email.to and not check_email(email.to)) or
-                        (email.cc and not check_email(email.cc)) or
-                        (email.bcc and not check_email(email.bcc)) or
-                        (email.from_ and not check_email(email.from_))):
-                    cls.raise_user_error('email_invalid')
+                if email.from_ and not check_email(parseaddr(email.from_)[1]):
+                    cls.raise_user_error('email_invalid', (email.from_,))
+                if email.to and not check_email(parseaddr(email.to)[1]):
+                    cls.raise_user_error('email_invalid', (email.to,))
+                if email.cc and not check_email(parseaddr(email.cc)[1]):
+                    cls.raise_user_error('email_invalid', (email.cc,))
+                if email.bcc and not check_email(parseaddr(email.bcc)[1]):
+                    cls.raise_user_error('email_invalid', (email.bcc,))
 
     @staticmethod
     def default_collision():
@@ -598,6 +599,5 @@ class ElectronicMail(ModelSQL, ModelView):
         if CHECK_EMAIL:
             for email in emails:
                 if not check_email(email):
-                    cls.raise_user_error('email_invalid',
-                        error_args=(email,))
+                    cls.raise_user_error('email_invalid', error_args=(email,))
         return True
