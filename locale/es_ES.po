@@ -19,12 +19,20 @@ msgid "You can not delete this mailbox because it has electronic mails."
 msgstr "No puede eliminar este buzon porqué tiene correos electrónicos."
 
 msgctxt "error:electronic.mail:"
-msgid "Invalid email. Please, check the email before save it."
-msgstr "Correo electrónico invalido. Por favor, reviselo antes de guardarlo."
+msgid "Invalid email \"%s\"."
+msgstr "El correo electrónico \"%s\" no es correcto."
 
 msgctxt "field:electronic.mail,bcc:"
 msgid "BCC"
 msgstr "BCC"
+
+msgctxt "field:electronic.mail,body_html:"
+msgid "Body HTML"
+msgstr "Texto HTML"
+
+msgctxt "field:electronic.mail,body_plain:"
+msgid "Body Plain"
+msgstr "Texto simple"
 
 msgctxt "field:electronic.mail,cc:"
 msgid "CC"
@@ -46,13 +54,17 @@ msgctxt "field:electronic.mail,date:"
 msgid "Date"
 msgstr "Fecha"
 
+msgctxt "field:electronic.mail,deliveredto:"
+msgid "Deliveret-To"
+msgstr "Entregado a"
+
 msgctxt "field:electronic.mail,digest:"
 msgid "MD5 Digest"
 msgstr "MD5"
 
-msgctxt "field:electronic.mail,email:"
-msgid "Email"
-msgstr "Correo electrónico"
+msgctxt "field:electronic.mail,email_file:"
+msgid "Email File"
+msgstr "Fichero email"
 
 msgctxt "field:electronic.mail,flag_answered:"
 msgid "Answered"
@@ -65,6 +77,10 @@ msgstr "Borrador"
 msgctxt "field:electronic.mail,flag_flagged:"
 msgid "Flagged"
 msgstr "Marcado"
+
+msgctxt "field:electronic.mail,flag_received:"
+msgid "Received"
+msgstr "Recibido"
 
 msgctxt "field:electronic.mail,flag_recent:"
 msgid "Recent"
@@ -110,9 +126,21 @@ msgctxt "field:electronic.mail,message_id:"
 msgid "Message-ID"
 msgstr "Modelo"
 
+msgctxt "field:electronic.mail,num_attach:"
+msgid "Number of attachments"
+msgstr "Número de adjuntos"
+
 msgctxt "field:electronic.mail,rec_name:"
 msgid "Name"
 msgstr "Nombre"
+
+msgctxt "field:electronic.mail,reference:"
+msgid "References"
+msgstr "Referencias"
+
+msgctxt "field:electronic.mail,reply_to:"
+msgid "Reply-To"
+msgstr "Respuesta a"
 
 msgctxt "field:electronic.mail,sender:"
 msgid "Sender"
@@ -326,6 +354,10 @@ msgctxt "field:electronic.mail.mailbox.write.res.user,write_uid:"
 msgid "Write User"
 msgstr "Usuario modificación"
 
+msgctxt "field:res.user,signature_html:"
+msgid "Signature"
+msgstr "Firma"
+
 msgctxt "help:electronic.mail,message_id:"
 msgid "Unique Message Identifier"
 msgstr "Identificador único mensaje"
@@ -421,3 +453,11 @@ msgstr "Correo electrónico"
 msgctxt "view:electronic.mail:"
 msgid "Emails"
 msgstr "Correos electrónicos"
+
+msgctxt "view:res.user:"
+msgid "Signature"
+msgstr "Firma"
+
+msgctxt "view:res.user:"
+msgid "Signature (HTML)"
+msgstr "Firma (HTML)"
