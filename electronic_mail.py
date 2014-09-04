@@ -11,7 +11,7 @@ from trytond.pool import Pool
 from trytond.pyson import Bool, Eval
 from trytond.transaction import Transaction
 from email import message_from_string
-from email.utils import parsedate, parseaddr
+from email.utils import parsedate, parseaddr, getaddresses
 from email.header import decode_header, make_header
 import logging
 import os
@@ -317,6 +317,34 @@ class ElectronicMail(ModelSQL, ModelView):
                     cls.raise_user_error('email_invalid', (email.cc,))
                 if email.bcc and not check_email(parseaddr(email.bcc)[1]):
                     cls.raise_user_error('email_invalid', (email.bcc,))
+
+    @property
+    def all_to(self):
+        email = msg_from_string(self.email_file)
+        all_to = getaddresses(email.get_all('to', []))
+        parse_all_to = []
+        for to in all_to:
+            parse_all_to.append((_decode_header(to[0]), _decode_header(to[1])))
+        return parse_all_to
+
+    @property
+    def all_cc(self):
+        email = msg_from_string(self.email_file)
+        all_cc = getaddresses(email.get_all('cc', []))
+        parse_all_cc = []
+        for cc in all_cc:
+            parse_all_cc.append((_decode_header(cc[0]), _decode_header(cc[1])))
+        return parse_all_cc
+
+    @property
+    def all_bcc(self):
+        email = msg_from_string(self.email_file)
+        all_bcc = getaddresses(email.get_all('bcc', []))
+        parse_all_bcc = []
+        for bcc in all_bcc:
+            parse_all_bcc.append(
+                (_decode_header(bcc[0]), _decode_header(bcc[1])))
+        return parse_all_bcc
 
     @staticmethod
     def default_collision():
