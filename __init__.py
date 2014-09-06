@@ -9,10 +9,10 @@ from .user import *
 
 def register():
     Pool.register(
+        Mailbox,
         ElectronicMail,
         ElectronicMailConfiguration,
         ElectronicMailConfigurationCompany,
-        Mailbox,
         ReadUser,
         User,
         WriteUser,
