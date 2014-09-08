@@ -323,29 +323,32 @@ class ElectronicMail(ModelSQL, ModelView):
     @property
     def all_to(self):
         email = msg_from_string(self.email_file)
-        all_to = getaddresses(email.get_all('to', []))
         parse_all_to = []
-        for to in all_to:
-            parse_all_to.append((_decode_header(to[0]), _decode_header(to[1])))
+        if email:
+            all_to = getaddresses(email.get_all('to', []))
+            for to in all_to:
+                parse_all_to.append((_decode_header(to[0]), _decode_header(to[1])))
         return parse_all_to
 
     @property
     def all_cc(self):
         email = msg_from_string(self.email_file)
-        all_cc = getaddresses(email.get_all('cc', []))
         parse_all_cc = []
-        for cc in all_cc:
-            parse_all_cc.append((_decode_header(cc[0]), _decode_header(cc[1])))
+        if email:
+            all_cc = getaddresses(email.get_all('cc', []))
+            for cc in all_cc:
+                parse_all_cc.append((_decode_header(cc[0]), _decode_header(cc[1])))
         return parse_all_cc
 
     @property
     def all_bcc(self):
         email = msg_from_string(self.email_file)
-        all_bcc = getaddresses(email.get_all('bcc', []))
         parse_all_bcc = []
-        for bcc in all_bcc:
-            parse_all_bcc.append(
-                (_decode_header(bcc[0]), _decode_header(bcc[1])))
+        if email:
+            all_bcc = getaddresses(email.get_all('bcc', []))
+            for bcc in all_bcc:
+                parse_all_bcc.append(
+                    (_decode_header(bcc[0]), _decode_header(bcc[1])))
         return parse_all_bcc
 
     @staticmethod
