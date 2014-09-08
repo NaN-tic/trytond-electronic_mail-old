@@ -55,7 +55,9 @@ def _decode_body(part):
 
 def msg_from_string(buffer_):
     " Convert mail file (buffer) to Email class"
-    return message_from_string(buffer_)
+    if isinstance(buffer_, (buffer, basestring)):
+        return message_from_string(buffer_)
+    return None
 
 
 __all__ = ['Mailbox', 'ReadUser', 'WriteUser', 'ElectronicMail']
