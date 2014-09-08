@@ -509,7 +509,7 @@ class ElectronicMail(ModelSQL, ModelView):
         for fname in ['body_plain', 'body_html', 'num_attach', 'email_file']:
             result[fname] = {}
         for mail in mails:
-            email_file = cls._get_email(mail) or False
+            email_file = cls._get_email(mail) or None
             result['email_file'][mail.id] = email_file
             email = msg_from_string(email_file)
             body = cls.get_body(mail, email)
