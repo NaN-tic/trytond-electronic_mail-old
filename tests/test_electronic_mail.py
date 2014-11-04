@@ -23,7 +23,7 @@ from trytond.transaction import Transaction
 from trytond.config import CONFIG
 
 # Set a data path since the module stores email attachment content in data dir
-CONFIG['data_path'] = '/tmp/'
+CONFIG.get('data_path') = '/tmp/'
 
 USER_TYPES = ('owner_user_%s', 'read_user_%s', 'write_user_%s')
 
