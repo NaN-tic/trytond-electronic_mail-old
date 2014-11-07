@@ -5,7 +5,7 @@ from __future__ import with_statement
 from datetime import datetime
 from sys import getsizeof
 from time import mktime
-from trytond.config import CONFIG
+from trytond.config import config
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import Pool
 from trytond.pyson import Bool, Eval
@@ -494,7 +494,7 @@ class ElectronicMail(ModelSQL, ModelView):
             filename = electronic_mail.digest
             if electronic_mail.collision:
                 filename = filename + '-' + str(electronic_mail.collision)
-            filename = os.path.join(CONFIG.get('data_path'), db_name,
+            filename = os.path.join(config.get('data_path'), db_name,
                 'email', filename[0:2], filename)
             try:
                 with open(filename, 'rb') as file_p:
@@ -528,7 +528,7 @@ class ElectronicMail(ModelSQL, ModelView):
             return
         db_name = Transaction().cursor.dbname
         # Prepare Directory <DATA PATH>/<DB NAME>/email
-        directory = os.path.join(CONFIG.get('data_path'), db_name)
+        directory = os.path.join(config.get('data_path'), db_name)
         if not os.path.isdir(directory):
             os.makedirs(directory, 0770)
         digest = cls.make_digest(data)
