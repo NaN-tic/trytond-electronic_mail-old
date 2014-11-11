@@ -494,8 +494,8 @@ class ElectronicMail(ModelSQL, ModelView):
             filename = electronic_mail.digest
             if electronic_mail.collision:
                 filename = filename + '-' + str(electronic_mail.collision)
-            filename = os.path.join(config.get('data_path'), db_name,
-                'email', filename[0:2], filename)
+            filename = os.path.join(config.get('database', 'path'),
+                db_name, 'email', filename[0:2], filename)
             try:
                 with open(filename, 'rb') as file_p:
                     value = buffer(file_p.read())
