@@ -6,9 +6,9 @@ The Electronic Mail module defines the base Mailbox and Emails.
 Configuration:
 **************
 
-In your configuration Tryton server file, configure:
+In your configuration Tryton server file, configure in database options:
 
-- data_path
+- path
 
 Mailbox:
 ********
@@ -20,6 +20,6 @@ Electronic Mail:
 
 Email information.
 
-Data email is save in directory server defined in data_path configuration:
+Data email is save in directory server defined in database/path configuration:
 
 <DATA PATH>/<DB NAME>/email

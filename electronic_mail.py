@@ -528,7 +528,7 @@ class ElectronicMail(ModelSQL, ModelView):
             return
         db_name = Transaction().cursor.dbname
         # Prepare Directory <DATA PATH>/<DB NAME>/email
-        directory = os.path.join(config.get('data_path'), db_name)
+        directory = os.path.join(config.get('database', 'path'), db_name)
         if not os.path.isdir(directory):
             os.makedirs(directory, 0770)
         digest = cls.make_digest(data)

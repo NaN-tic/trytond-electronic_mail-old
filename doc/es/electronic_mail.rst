@@ -27,8 +27,8 @@ Configuración
 =============
 
 En el fichero de configuración del servidor de Tryton, se debe especificar la
-variable:
+variable en los valores de "database":
 
 .. code:: python
 
-    data_path
+    path
