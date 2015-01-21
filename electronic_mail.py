@@ -257,7 +257,7 @@ class ElectronicMail(ModelSQL, ModelView):
     "E-mail"
     __name__ = 'electronic.mail'
     _order_name = 'date'
-
+    _rec_name = 'subject'
     mailbox = fields.Many2One(
         'electronic.mail.mailbox', 'Mailbox', required=True)
     from_ = fields.Char('From')
@@ -370,6 +370,16 @@ class ElectronicMail(ModelSQL, ModelView):
     @staticmethod
     def default_flag_recent():
         return False
+
+    @classmethod
+    def search_rec_name(cls, name, clause):
+        return ['OR',
+            ('subject',) + tuple(clause[1:]),
+            ('from_',) + tuple(clause[1:]),
+            ('to',) + tuple(clause[1:]),
+            ('cc',) + tuple(clause[1:]),
+            ('bcc',) + tuple(clause[1:]),
+            ]
 
     @classmethod
     def get_rec_name(cls, records, name):
