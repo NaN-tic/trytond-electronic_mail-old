@@ -73,6 +73,7 @@ class Mailbox(ModelSQL, ModelView):
             'mailbox', 'user', 'Read Users')
     write_users = fields.Many2Many('electronic.mail.mailbox.write.res.user',
             'mailbox', 'user', 'Write Users')
+    smtp_server = fields.Many2One('smtp.server', 'SMTP Server')
 
     @classmethod
     def __setup__(cls):
