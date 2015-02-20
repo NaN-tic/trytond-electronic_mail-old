@@ -2,10 +2,13 @@
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
 from __future__ import with_statement
+
+from _socket import gaierror, error
 from datetime import datetime
 from sys import getsizeof
 from time import mktime
 from trytond.config import config
+from trytond.exceptions import UserError
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import Pool
 from trytond.pyson import Bool, Eval
@@ -15,6 +18,7 @@ from email.utils import parsedate, parseaddr, getaddresses
 from email.header import decode_header, make_header
 import logging
 import os
+from smtplib import SMTPAuthenticationError
 import chardet
 import mimetypes
 try:
@@ -304,6 +308,8 @@ class ElectronicMail(ModelSQL, ModelView):
         super(ElectronicMail, cls).__setup__()
         cls._order.insert(0, ('date', 'DESC'))
         cls._error_messages.update({
+                'smtp_error': 'Wrong connection to SMTP server. '
+                    'Email have not been sent: %s',
                 'email_invalid': ('Invalid email "%s".'),
                 })
 
@@ -314,12 +320,59 @@ class ElectronicMail(ModelSQL, ModelView):
             for email in emails:
                 if email.from_ and not check_email(parseaddr(email.from_)[1]):
                     cls.raise_user_error('email_invalid', (email.from_,))
-                if email.to and not check_email(parseaddr(email.to)[1]):
-                    cls.raise_user_error('email_invalid', (email.to,))
-                if email.cc and not check_email(parseaddr(email.cc)[1]):
-                    cls.raise_user_error('email_invalid', (email.cc,))
-                if email.bcc and not check_email(parseaddr(email.bcc)[1]):
-                    cls.raise_user_error('email_invalid', (email.bcc,))
+                for recipient in email.recipients_from_fields():
+                    if not check_email(recipient):
+                        cls.raise_user_error('email_invalid', (recipient,))
+
+    def recipients_from_fields(self):
+        """
+        Returns a list of email addresses who are the recipients of this email
+
+        :param email_record: Browse record of the email
+        """
+        recipients = []
+        for field in ('to', 'cc', 'bcc'):
+            if getattr(self, field, False):
+                recipients.extend(
+                    getattr(self,
+                        field).replace(' ', '').replace(',', ';').split(';')
+                    )
+        return recipients
+
+    def send_email(self, server=None):
+        pool = Pool()
+        SMTP = pool.get('smtp.server')
+
+        recipients = self.recipients_from_fields()
+
+        # Get the default server of its mailbox
+        if not server:
+            server = self.mailbox.smtp_server
+
+        # SMTP Server from template or default
+        if not server:
+            server = SMTP.search([
+                    ('state', '=', 'done'),
+                    ('default', '=', True),
+                    ])
+        if not server > 0:
+            self.raise_user_error('smtp_server_default')
+
+        try:
+            smtp_server = server.get_smtp_server()
+            smtp_server.sendmail(self.from_, recipients, self._get_email())
+            smtp_server.quit()
+            self.flag_send = True
+            self.save()
+        except (error, gaierror, SMTPAuthenticationError), e:
+            try:
+                self.raise_user_error('smtp_error',
+                    error_args=(e,))
+            except UserError:
+                logging.getLogger(' Mail').error(' Message not sent: %s' %
+                    (e,))
+                return False
+        return True
 
     @property
     def all_to(self):
@@ -493,18 +546,17 @@ class ElectronicMail(ModelSQL, ModelView):
     def search_mailbox_users(cls, name, clause):
         return [('mailbox.' + name[8:],) + clause[1:]]
 
-    @staticmethod
-    def _get_email(electronic_mail):
+    def _get_email(self):
         """
         Returns the email object from reading the FS
         :param electronic_mail: Browse Record of the mail
         """
         db_name = Transaction().cursor.dbname
         value = u''
-        if electronic_mail.digest:
-            filename = electronic_mail.digest
-            if electronic_mail.collision:
-                filename = filename + '-' + str(electronic_mail.collision)
+        if self.digest:
+            filename = self.digest
+            if self.collision:
+                filename = filename + '-' + str(self.collision)
             filename = os.path.join(config.get('database', 'path'),
                 db_name, 'email', filename[0:2], filename)
             try:
@@ -520,7 +572,7 @@ class ElectronicMail(ModelSQL, ModelView):
         for fname in ['body_plain', 'body_html', 'num_attach', 'email_file']:
             result[fname] = {}
         for mail in mails:
-            email_file = cls._get_email(mail) or None
+            email_file = mail._get_email() or None
             result['email_file'][mail.id] = email_file
             email = msg_from_string(email_file)
             body = cls.get_body(mail, email)
