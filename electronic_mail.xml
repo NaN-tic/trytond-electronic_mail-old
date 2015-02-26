@@ -234,7 +234,6 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <field name="repeat_missed" eval="False"/>
             <field name="model">electronic.mail</field>
             <field name="function">send_emails_scheduler</field>
-            <field name="args">(,)</field>
         </record>
   </data>
 </tryton>
