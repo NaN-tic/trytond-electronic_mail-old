@@ -311,8 +311,8 @@ class ElectronicMail(ModelSQL, ModelView):
         super(ElectronicMail, cls).__setup__()
         cls._order.insert(0, ('date', 'DESC'))
         cls._error_messages.update({
-                'smtp_error': 'Wrong connection to SMTP server. '
-                    'Email have not been sent: %s',
+                'smtp_error': 'Error connecting to SMTP server. '
+                    'Emails have not been sent: %s',
                 'email_invalid': ('Invalid email "%s".'),
                 })
 

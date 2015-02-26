@@ -27,8 +27,18 @@ msgid "You can not delete this mailbox because it has electronic mails."
 msgstr "No podeu eliminar aquesta bústia perquè te correus electrònics."
 
 msgctxt "error:electronic.mail:"
+msgid "Error connecting to SMTP server. Emails have not been sent: %s"
+msgstr ""
+"Error connectant amb el servidor SMTP. Els correus electrònics no s'han "
+"enviat: %s"
+
+msgctxt "error:electronic.mail:"
 msgid "Invalid email \"%s\"."
 msgstr "El correu electrònic \"%s\" no es correcta."
+
+msgctxt "field:electronic.mail,attempts:"
+msgid "Attempts"
+msgstr "Intents"
 
 msgctxt "field:electronic.mail,bcc:"
 msgid "BCC"
@@ -148,7 +158,7 @@ msgstr "Referencies"
 
 msgctxt "field:electronic.mail,reply_to:"
 msgid "Reply-To"
-msgstr "En resposta a"
+msgstr "Respondre a"
 
 msgctxt "field:electronic.mail,sender:"
 msgid "Sender"
@@ -282,6 +292,10 @@ msgctxt "field:electronic.mail.mailbox,rec_name:"
 msgid "Name"
 msgstr "Nom"
 
+msgctxt "field:electronic.mail.mailbox,smtp_server:"
+msgid "SMTP Server"
+msgstr "Servidor SMTP"
+
 msgctxt "field:electronic.mail.mailbox,user:"
 msgid "Owner"
 msgstr "Propietari"
@@ -405,6 +419,10 @@ msgstr "Correus electrònics"
 msgctxt "model:ir.action,name:act_mailbox_form"
 msgid "Mailboxes"
 msgstr "Bústies de correu"
+
+msgctxt "model:ir.cron,name:cron_send_emails"
+msgid "Send eMails Scheduler"
+msgstr "Planificador d'enviament de correus electrònics"
 
 msgctxt "model:ir.ui.menu,name:menu_electronic_mail_configuration"
 msgid "Electronic Mail Configuration"

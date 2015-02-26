@@ -27,8 +27,18 @@ msgid "You can not delete this mailbox because it has electronic mails."
 msgstr "No puede eliminar este buzon porqué tiene correos electrónicos."
 
 msgctxt "error:electronic.mail:"
+msgid "Error connecting to SMTP server. Emails have not been sent: %s"
+msgstr ""
+"Error conectando con el servidor SMTP. Los correos electrónicos no se han "
+"enviado: %s"
+
+msgctxt "error:electronic.mail:"
 msgid "Invalid email \"%s\"."
 msgstr "El correo electrónico \"%s\" no es correcto."
+
+msgctxt "field:electronic.mail,attempts:"
+msgid "Attempts"
+msgstr "Intentos"
 
 msgctxt "field:electronic.mail,bcc:"
 msgid "BCC"
@@ -282,6 +292,10 @@ msgctxt "field:electronic.mail.mailbox,rec_name:"
 msgid "Name"
 msgstr "Nombre"
 
+msgctxt "field:electronic.mail.mailbox,smtp_server:"
+msgid "SMTP Server"
+msgstr "Servidor SMTP"
+
 msgctxt "field:electronic.mail.mailbox,user:"
 msgid "Owner"
 msgstr "Propietario"
@@ -405,6 +419,10 @@ msgstr "Correos electrónicos"
 msgctxt "model:ir.action,name:act_mailbox_form"
 msgid "Mailboxes"
 msgstr "Buzones correo"
+
+msgctxt "model:ir.cron,name:cron_send_emails"
+msgid "Send eMails Scheduler"
+msgstr "Planificador de envío de correos electrónicos"
 
 msgctxt "model:ir.ui.menu,name:menu_electronic_mail_configuration"
 msgid "Electronic Mail Configuration"
