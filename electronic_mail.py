@@ -12,6 +12,7 @@ from trytond.exceptions import UserError
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import Pool
 from trytond.pyson import Bool, Eval
+from trytond.tools.misc import reduce_ids
 from trytond.transaction import Transaction
 from email import message_from_string
 from email.utils import parsedate, parseaddr, getaddresses
@@ -314,6 +315,22 @@ class ElectronicMail(ModelSQL, ModelView):
                     'Email have not been sent: %s',
                 'email_invalid': ('Invalid email "%s".'),
                 })
+
+    @classmethod
+    def __register__(cls, module_name):
+        cursor = Transaction().cursor
+        sql_table = cls.__table__()
+
+        super(ElectronicMail, cls).__register__(module_name)
+
+        # Migration from 3.2: fill required attempts
+        cursor.execute(*sql_table.select(sql_table.id,
+                where=(sql_table.attempts == None)))
+        records_to_update = reduce_ids(sql_table.id,
+            [v[0] for v in cursor.fetchall()])
+        cursor.execute(*sql_table.update(
+                columns=[sql_table.attempts], values=[0],
+                where=(records_to_update)))
 
     @staticmethod
     def default_attempts():
