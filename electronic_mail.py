@@ -2,7 +2,7 @@
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
 from __future__ import with_statement
-
+from itertools import groupby
 from _socket import gaierror, error
 from datetime import datetime
 from sys import getsizeof
@@ -16,9 +16,10 @@ from trytond.transaction import Transaction
 from email import message_from_string
 from email.utils import parsedate, parseaddr, getaddresses
 from email.header import decode_header, make_header
+import operator
 import logging
 import os
-from smtplib import SMTPAuthenticationError
+from smtplib import SMTPAuthenticationError, SMTPException
 import chardet
 import mimetypes
 try:
@@ -302,6 +303,7 @@ class ElectronicMail(ModelSQL, ModelView):
     mailbox_write_users = fields.Function(
         fields.One2Many('res.user', None, 'Write Users'),
         'get_mailbox_users', searcher='search_mailbox_users')
+    attempts = fields.Integer("Attempts", required=True, readonly=True)
 
     @classmethod
     def __setup__(cls):
@@ -312,6 +314,10 @@ class ElectronicMail(ModelSQL, ModelView):
                     'Email have not been sent: %s',
                 'email_invalid': ('Invalid email "%s".'),
                 })
+
+    @staticmethod
+    def default_attempts():
+        return 0
 
     @classmethod
     def validate(cls, emails):
@@ -338,6 +344,65 @@ class ElectronicMail(ModelSQL, ModelView):
                         field).replace(' ', '').replace(',', ';').split(';')
                     )
         return recipients
+
+    @classmethod
+    def send_emails_scheduler(cls, args=None):
+        '''
+        This method is intended to be called from ir.cron
+        @param args: Tuple with a limit of emails sent by each call of the cron
+        '''
+        pool = Pool()
+        EMailConfiguration = pool.get('electronic.mail.configuration')
+        email_configuration = EMailConfiguration(1)
+        out_mailbox = email_configuration.outbox
+        limit = None
+        if args:
+            try:
+                limit = int(args)
+            except (TypeError, ValueError):
+                pass
+        emails = cls.search([
+            ('mailbox', '=', out_mailbox)
+            ], order=[('date', 'ASC')], limit=limit)
+        return cls.send_emails(emails)
+
+    @classmethod
+    def send_emails(cls, emails):
+        pool = Pool()
+        EMailConfiguration = pool.get('electronic.mail.configuration')
+        email_configuration = EMailConfiguration(1)
+        sent_mailbox = email_configuration.sent
+
+        grouped_emails = groupby(emails, operator.attrgetter('mailbox'))
+
+        for mailbox, emails in grouped_emails:
+            smtp_server = None
+            try:
+                smtp_server = mailbox.smtp_server.get_smtp_server()
+            except (error, gaierror, SMTPAuthenticationError), e:
+                try:
+                    cls.raise_user_error('smtp_error', error_args=(e,))
+                except UserError:
+                    logging.getLogger(' Mail').error(' Messages not sent: %s' %
+                        (e,))
+            else:
+                for email in emails:
+                    email.attempts += 1
+                    try:
+                        smtp_server.sendmail(email.from_,
+                            email.recipients_from_fields(), email._get_email())
+                    except SMTPException, e:
+                        logging.getLogger(' Mail').error(
+                            ' Messages not sent: %s' % (e,))
+                    else:
+                        logging.getLogger(' Mail').info(' Message sent. ID: %s'
+                            % email.id)
+                        email.mailbox = sent_mailbox
+                        email.flag_send = True
+                    finally:
+                        email.save()
+            finally:
+                smtp_server.quit()
 
     def send_email(self, server=None):
         pool = Pool()

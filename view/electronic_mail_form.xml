@@ -26,7 +26,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
         <label name="flag_received"/>
         <field name="flag_received"/>
     </group>
-    <group colspan="4" col="10" id="flags_area">
+    <group colspan="4" col="12" id="flags_area">
         <label name="flag_seen"/>
         <field name="flag_seen"/>
         <label name="flag_flagged"/>
@@ -37,6 +37,8 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
         <field name="flag_draft"/>
         <label name="flag_recent"/>
         <field name="flag_recent"/>
+        <label name="attempts"/>
+        <field name="attempts"/>
     </group>
     <separator name="body_plain" colspan="2"/>
     <separator name="body_html" colspan="2"/>

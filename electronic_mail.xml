@@ -222,5 +222,19 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
       <field name="rule_group" ref="rule_group_write_mail"/>
     </record>
 -->
+
+        <record model="ir.cron" id="cron_send_emails">
+            <field name="name">Send eMails Scheduler</field>
+            <field name="request_user" ref="res.user_admin"/>
+            <field name="user" ref="res.user_trigger"/>
+            <field name="active" eval="True"/>
+            <field name="interval_number" eval="15"/>
+            <field name="interval_type">minutes</field>
+            <field name="number_calls" eval="-1"/>
+            <field name="repeat_missed" eval="False"/>
+            <field name="model">electronic.mail</field>
+            <field name="function">send_emails_scheduler</field>
+            <field name="args">(,)</field>
+        </record>
   </data>
 </tryton>
