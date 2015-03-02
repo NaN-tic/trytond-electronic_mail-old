@@ -421,24 +421,26 @@ class ElectronicMail(ModelSQL, ModelView):
             finally:
                 smtp_server.quit()
 
-    def send_email(self, server=None):
+    def send_email(self):
         pool = Pool()
         SMTP = pool.get('smtp.server')
+        EmailConfiguration = pool.get('electronic.mail.configuration')
+        email_configuration = EmailConfiguration(1)
 
         recipients = self.recipients_from_fields()
 
-        # Get the default server of its mailbox
-        if not server:
+        if self.mailbox.smtp_server:
             server = self.mailbox.smtp_server
-
-        # SMTP Server from template or default
-        if not server:
-            server = SMTP.search([
+        elif email_configuration.sent.smtp_server:
+            server = email_configuration.sent.smtp_server
+        else:
+            servers = SMTP.search([
                     ('state', '=', 'done'),
                     ('default', '=', True),
-                    ])
-        if not server > 0:
-            self.raise_user_error('smtp_server_default')
+                    ], limit=1)
+            if not servers:
+                self.raise_user_error('smtp_server_default')
+            server, = servers
 
         try:
             smtp_server = server.get_smtp_server()
