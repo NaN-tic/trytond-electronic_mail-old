@@ -228,8 +228,8 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
             <field name="request_user" ref="res.user_admin"/>
             <field name="user" ref="res.user_trigger"/>
             <field name="active" eval="True"/>
-            <field name="interval_number" eval="15"/>
-            <field name="interval_type">minutes</field>
+            <field name="interval_number" eval="1"/>
+            <field name="interval_type">hours</field>
             <field name="number_calls" eval="-1"/>
             <field name="repeat_missed" eval="False"/>
             <field name="model">electronic.mail</field>
