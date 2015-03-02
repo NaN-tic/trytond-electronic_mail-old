@@ -369,8 +369,8 @@ class ElectronicMail(ModelSQL, ModelView):
         @param args: Tuple with a limit of emails sent by each call of the cron
         '''
         pool = Pool()
-        EMailConfiguration = pool.get('electronic.mail.configuration')
-        email_configuration = EMailConfiguration(1)
+        EmailConfiguration = pool.get('electronic.mail.configuration')
+        email_configuration = EmailConfiguration(1)
         out_mailbox = email_configuration.outbox
         limit = None
         if args:
@@ -381,6 +381,8 @@ class ElectronicMail(ModelSQL, ModelView):
         emails = cls.search([
             ('mailbox', '=', out_mailbox)
             ], order=[('date', 'ASC')], limit=limit)
+        logging.getLogger('Mail Scheduler').info('Start send %s emails' % (
+            len(emails)))
         return cls.send_emails(emails)
 
     @classmethod
@@ -394,13 +396,17 @@ class ElectronicMail(ModelSQL, ModelView):
 
         for mailbox, emails in grouped_emails:
             smtp_server = None
+            if not mailbox.smtp_server:
+                logging.getLogger('Mail').error('Not configured SMTP server '
+                    'in mailbox %s' % (mailbox.name))
+                continue
             try:
                 smtp_server = mailbox.smtp_server.get_smtp_server()
             except (error, gaierror, SMTPAuthenticationError), e:
                 try:
                     cls.raise_user_error('smtp_error', error_args=(e,))
                 except UserError:
-                    logging.getLogger(' Mail').error(' Messages not sent: %s' %
+                    logging.getLogger('Mail').error('Messages not sent: %s' %
                         (e,))
             else:
                 for email in emails:
@@ -409,11 +415,11 @@ class ElectronicMail(ModelSQL, ModelView):
                         smtp_server.sendmail(email.from_,
                             email.recipients_from_fields(), email._get_email())
                     except SMTPException, e:
-                        logging.getLogger(' Mail').error(
-                            ' Messages not sent: %s' % (e,))
+                        logging.getLogger('Mail').error(
+                            'Messages not sent: %s' % (e,))
                     else:
-                        logging.getLogger(' Mail').info(' Message sent. ID: %s'
-                            % email.id)
+                        logging.getLogger('Mail').info('Send email: %s'
+                            % email.rec_name)
                         email.mailbox = sent_mailbox
                         email.flag_send = True
                     finally:
