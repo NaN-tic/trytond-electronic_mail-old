@@ -24,6 +24,9 @@ vayamos creando. Para crear un buzón, simplemente tenemos que clicar en el bot�
 y ya tendremos creado un nuevo buzón. Posteriormente configuraremos qué correos se
 guardarán en qué buzones.
 
+Para el envío de correo mediante colas, selecciona un servidor de SMTP en el buzón
+de la configuración de salida.
+
 |electronic_mail|
 =================
 
