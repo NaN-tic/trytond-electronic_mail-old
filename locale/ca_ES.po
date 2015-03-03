@@ -292,6 +292,10 @@ msgctxt "field:electronic.mail.mailbox,rec_name:"
 msgid "Name"
 msgstr "Nom"
 
+msgctxt "field:electronic.mail.mailbox,scheduler:"
+msgid "Scheduler"
+msgstr "Planificador de tasques"
+
 msgctxt "field:electronic.mail.mailbox,smtp_server:"
 msgid "SMTP Server"
 msgstr "Servidor SMTP"
@@ -383,6 +387,10 @@ msgstr "Firma"
 msgctxt "help:electronic.mail,message_id:"
 msgid "Unique Message Identifier"
 msgstr "Identificador únic del missatge"
+
+msgctxt "help:electronic.mail.mailbox,scheduler:"
+msgid "Send emails in this mailbox by the scheduler"
+msgstr "Envia aquesta bústia de correu mitjançant planificador de tasques"
 
 msgctxt "model:electronic.mail,name:"
 msgid "E-mail"
