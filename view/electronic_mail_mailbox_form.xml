@@ -5,10 +5,12 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
     <group colspan="4" id="wrapper">
         <label name="name"/>
         <field name="name"/>
-        <label name="user"/>
-        <field name="user"/>
+        <label name="scheduler"/>
+        <field name="scheduler"/>
         <label name="smtp_server"/>
         <field name="smtp_server"/>
+        <label name="user"/>
+        <field name="user"/>
     </group>
     <notebook colspan="4">
         <page string="Permissions" id="permissions">

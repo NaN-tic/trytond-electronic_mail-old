@@ -79,7 +79,12 @@ class Mailbox(ModelSQL, ModelView):
             'mailbox', 'user', 'Read Users')
     write_users = fields.Many2Many('electronic.mail.mailbox.write.res.user',
             'mailbox', 'user', 'Write Users')
-    smtp_server = fields.Many2One('smtp.server', 'SMTP Server')
+    scheduler = fields.Boolean('Scheduler',
+        help='Send emails in this mailbox by the scheduler')
+    smtp_server = fields.Many2One('smtp.server', 'SMTP Server',
+        domain=[('state', '=', 'done')], states={
+            'required': Eval('scheduler', True),
+        }, depends=['scheduler'])
 
     @classmethod
     def __setup__(cls):
@@ -95,6 +100,10 @@ class Mailbox(ModelSQL, ModelView):
                     'invisible': Bool(Eval('menu')),
                     },
                 })
+
+    @staticmethod
+    def default_scheduler():
+        return False
 
     @classmethod
     def delete(cls, mailboxes):
@@ -265,8 +274,8 @@ class ElectronicMail(ModelSQL, ModelView):
     __name__ = 'electronic.mail'
     _order_name = 'date'
     _rec_name = 'subject'
-    mailbox = fields.Many2One(
-        'electronic.mail.mailbox', 'Mailbox', required=True)
+    mailbox = fields.Many2One('electronic.mail.mailbox', 'Mailbox',
+        required=True)
     from_ = fields.Char('From')
     sender = fields.Char('Sender')
     to = fields.Char('To')
@@ -368,18 +377,24 @@ class ElectronicMail(ModelSQL, ModelView):
         This method is intended to be called from ir.cron
         @param args: Tuple with a limit of emails sent by each call of the cron
         '''
-        pool = Pool()
-        EmailConfiguration = pool.get('electronic.mail.configuration')
-        email_configuration = EmailConfiguration(1)
-        out_mailbox = email_configuration.outbox
+        Mailbox = Pool().get('electronic.mail.mailbox')
+
         limit = None
         if args:
             try:
                 limit = int(args)
             except (TypeError, ValueError):
                 pass
+
+        mailboxs = Mailbox.search([
+            ('scheduler', '=', True),
+            ])
+        if not mailboxs:
+            logging.getLogger('Mail Scheduler').warning(
+                'Configure mailboxs to send by the scheduler')
+
         emails = cls.search([
-            ('mailbox', '=', out_mailbox)
+            ('mailbox', 'in', mailboxs)
             ], order=[('date', 'ASC')], limit=limit)
         logging.getLogger('Mail Scheduler').info('Start send %s emails' % (
             len(emails)))
@@ -749,15 +764,15 @@ class ElectronicMail(ModelSQL, ModelView):
     def create_from_email(cls, mail, mailbox, context={}):
         """
         Creates a mail record from a given mail
-        :param mail: email object
-        :param mailbox: ID of the mailbox
+        :param mail: Email
+        :param mailbox: Mailbox
         :param context: dict
         """
         email_date = (_decode_header(mail.get('date', "")) and
             datetime.fromtimestamp(
                 mktime(parsedate(mail.get('date')))))
         values = {
-            'mailbox': mailbox,
+            'mailbox': mailbox.id,
             'from_': _decode_header(mail.get('from')),
             'sender': _decode_header(mail.get('sender')),
             'to': _decode_header(mail.get('to')),
