@@ -106,6 +106,10 @@ class Mailbox(ModelSQL, ModelView):
         return False
 
     @classmethod
+    def check_xml_record(cls, records, values):
+        return True
+
+    @classmethod
     def delete(cls, mailboxes):
         # TODO Add a wizard that pops up a window telling that menu is deleted
         # and that in order to see it, you must type ALT+T or refresh the menu
