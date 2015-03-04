@@ -429,8 +429,8 @@ msgid "Mailboxes"
 msgstr "Buzones correo"
 
 msgctxt "model:ir.cron,name:cron_send_emails"
-msgid "Send eMails Scheduler"
-msgstr "Planificador de envío de correos electrónicos"
+msgid "Send eMails"
+msgstr "Envío de correos electrónicos"
 
 msgctxt "model:ir.ui.menu,name:menu_electronic_mail_configuration"
 msgid "Electronic Mail Configuration"

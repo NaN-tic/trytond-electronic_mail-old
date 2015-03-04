@@ -224,7 +224,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
 -->
 
         <record model="ir.cron" id="cron_send_emails">
-            <field name="name">Send eMails Scheduler</field>
+            <field name="name">Send eMails</field>
             <field name="request_user" ref="res.user_admin"/>
             <field name="user" ref="res.user_trigger"/>
             <field name="active" eval="True"/>
