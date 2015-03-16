@@ -775,6 +775,11 @@ class ElectronicMail(ModelSQL, ModelView):
         email_date = (_decode_header(mail.get('date', "")) and
             datetime.fromtimestamp(
                 mktime(parsedate(mail.get('date')))))
+        if not mailbox:
+            logging.getLogger('Electronic Mail').error(
+                'Not mailbox configured.')
+            return
+
         values = {
             'mailbox': mailbox.id,
             'from_': _decode_header(mail.get('from')),
