@@ -453,6 +453,10 @@ class ElectronicMail(ModelSQL, ModelView):
         email_configuration = EmailConfiguration(1)
 
         recipients = self.recipients_from_fields()
+        if not recipients:
+            self.mailbox = email_configuration.draft
+            self.save()
+            return False
 
         if self.mailbox.smtp_server:
             server = self.mailbox.smtp_server
