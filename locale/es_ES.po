@@ -398,7 +398,7 @@ msgstr "E-mail"
 
 msgctxt "model:electronic.mail.configuration,name:"
 msgid "Electronic Mail Configuration"
-msgstr "Configuración del correo electrónico"
+msgstr "Configuración del correo"
 
 msgctxt "model:electronic.mail.configuration.company,name:"
 msgid "Electronic Mail Configuration Company"

@@ -118,7 +118,7 @@ msgstr "De"
 
 msgctxt "field:electronic.mail,id:"
 msgid "ID"
-msgstr "Identificador"
+msgstr "ID"
 
 msgctxt "field:electronic.mail,in_reply_to:"
 msgid "In-Reply-To"
@@ -202,7 +202,7 @@ msgstr "Error"
 
 msgctxt "field:electronic.mail.configuration,id:"
 msgid "ID"
-msgstr "Identificador"
+msgstr "ID"
 
 msgctxt "field:electronic.mail.configuration,outbox:"
 msgid "Outbox"
@@ -246,7 +246,7 @@ msgstr "Error"
 
 msgctxt "field:electronic.mail.configuration.company,id:"
 msgid "ID"
-msgstr "Identificador"
+msgstr "ID"
 
 msgctxt "field:electronic.mail.configuration.company,outbox:"
 msgid "Outbox"
@@ -278,7 +278,7 @@ msgstr "Usuari creació"
 
 msgctxt "field:electronic.mail.mailbox,id:"
 msgid "ID"
-msgstr "Identificador"
+msgstr "ID"
 
 msgctxt "field:electronic.mail.mailbox,name:"
 msgid "Name"
@@ -326,7 +326,7 @@ msgstr "Usuari creació"
 
 msgctxt "field:electronic.mail.mailbox.read.res.user,id:"
 msgid "ID"
-msgstr "Identificador"
+msgstr "ID"
 
 msgctxt "field:electronic.mail.mailbox.read.res.user,mailbox:"
 msgid "Mailbox"
@@ -358,7 +358,7 @@ msgstr "Usuari creació"
 
 msgctxt "field:electronic.mail.mailbox.write.res.user,id:"
 msgid "ID"
-msgstr "Identificador"
+msgstr "ID"
 
 msgctxt "field:electronic.mail.mailbox.write.res.user,mailbox:"
 msgid "mailbox"
@@ -386,7 +386,7 @@ msgstr "Firma"
 
 msgctxt "help:electronic.mail,message_id:"
 msgid "Unique Message Identifier"
-msgstr "Identificador únic del missatge"
+msgstr "ID únic del missatge"
 
 msgctxt "help:electronic.mail.mailbox,scheduler:"
 msgid "Send emails in this mailbox by the scheduler"
@@ -398,7 +398,7 @@ msgstr "E-mail"
 
 msgctxt "model:electronic.mail.configuration,name:"
 msgid "Electronic Mail Configuration"
-msgstr "Configuracio correu electrònic"
+msgstr "Configuració correu"
 
 msgctxt "model:electronic.mail.configuration.company,name:"
 msgid "Electronic Mail Configuration Company"
