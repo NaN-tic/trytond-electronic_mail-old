@@ -798,8 +798,8 @@ class ElectronicMail(ModelSQL, ModelView):
             'deliveredto': _decode_header(mail.get('delivered-to')),
             'reference': _decode_header(mail.get('references')),
             'reply_to': _decode_header(mail.get('reply-to')),
-            'email_file': mail.__str__(),
-            'size': getsizeof(mail.__str__()),
+            'email_file': mail.as_string(),
+            'size': getsizeof(mail.as_string()),
             }
 
         email = cls.create([values])[0]
