@@ -357,7 +357,7 @@ class ElectronicMail(ModelSQL, ModelView):
                 if email.from_ and not check_email(parseaddr(email.from_)[1]):
                     cls.raise_user_error('email_invalid', (email.from_,))
                 for recipient in email.recipients_from_fields():
-                    if not check_email(recipient):
+                    if not check_email(parseaddr(recipient)[1]):
                         cls.raise_user_error('email_invalid', (recipient,))
 
     def recipients_from_fields(self):
@@ -812,6 +812,6 @@ class ElectronicMail(ModelSQL, ModelView):
         '''
         if CHECK_EMAIL:
             for email in emails:
-                if not check_email(email):
+                if not check_email(parseaddr(email)[1]):
                     cls.raise_user_error('email_invalid', error_args=(email,))
         return True
