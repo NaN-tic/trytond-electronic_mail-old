@@ -36,6 +36,10 @@ msgctxt "error:electronic.mail:"
 msgid "Invalid email \"%s\"."
 msgstr "El correu electrònic \"%s\" no es correcta."
 
+msgctxt "error:electronic.mail:"
+msgid "There are not default SMTP server"
+msgstr "No hi ha cap servidor SMTP per defecte."
+
 msgctxt "field:electronic.mail,attempts:"
 msgid "Attempts"
 msgstr "Intents"
