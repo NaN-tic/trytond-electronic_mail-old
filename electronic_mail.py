@@ -326,6 +326,7 @@ class ElectronicMail(ModelSQL, ModelView):
         cls._error_messages.update({
                 'smtp_error': 'Error connecting to SMTP server. '
                     'Emails have not been sent: %s',
+                'smtp_server_default': 'There are not default SMTP server',
                 'email_invalid': ('Invalid email "%s".'),
                 })
 
