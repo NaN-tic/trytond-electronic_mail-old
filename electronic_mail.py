@@ -461,7 +461,7 @@ class ElectronicMail(ModelSQL, ModelView):
 
         if self.mailbox.smtp_server:
             server = self.mailbox.smtp_server
-        elif email_configuration.sent.smtp_server:
+        elif email_configuration.sent and email_configuration.sent.smtp_server:
             server = email_configuration.sent.smtp_server
         else:
             servers = SMTP.search([
