@@ -23,18 +23,21 @@ import os
 from smtplib import SMTPAuthenticationError, SMTPException
 import chardet
 import mimetypes
+
+logger = logging.getLogger(__name__)
+
 try:
     import hashlib
 except ImportError:
     hashlib = None
     import md5
+    
 try:
     from emailvalid import check_email
     CHECK_EMAIL = True
 except ImportError:
     CHECK_EMAIL = False
-    logging.getLogger('Electronic Mail').warning(
-    'Unable to import emailvalid. Email validation disabled.')
+    logger.warning('Unable to import emailvalid. Email validation disabled.')
 
 
 def _make_header(data, charset='utf-8'):
@@ -395,14 +398,12 @@ class ElectronicMail(ModelSQL, ModelView):
             ('scheduler', '=', True),
             ])
         if not mailboxs:
-            logging.getLogger('Mail Scheduler').warning(
-                'Configure mailboxs to send by the scheduler')
+            logger.warning('Configure mailboxs to send by the scheduler')
 
         emails = cls.search([
             ('mailbox', 'in', mailboxs)
             ], order=[('date', 'ASC')], limit=limit)
-        logging.getLogger('Mail Scheduler').info('Start send %s emails' % (
-            len(emails)))
+        logger.info('Start send %s emails' % (len(emails)))
         return cls.send_emails(emails)
 
     @classmethod
@@ -417,7 +418,7 @@ class ElectronicMail(ModelSQL, ModelView):
         for mailbox, emails in grouped_emails:
             smtp_server = None
             if not mailbox.smtp_server:
-                logging.getLogger('Mail').error('Not configured SMTP server '
+                logger.error('Not configured SMTP server '
                     'in mailbox %s' % (mailbox.name))
                 continue
             try:
@@ -426,8 +427,7 @@ class ElectronicMail(ModelSQL, ModelView):
                 try:
                     cls.raise_user_error('smtp_error', error_args=(e,))
                 except UserError:
-                    logging.getLogger('Mail').error('Messages not sent: %s' %
-                        (e,))
+                    logger.error('Messages not sent: %s' % (e,))
             else:
                 for email in emails:
                     email.attempts += 1
@@ -435,11 +435,9 @@ class ElectronicMail(ModelSQL, ModelView):
                         smtp_server.sendmail(email.from_,
                             email.recipients_from_fields(), email._get_email())
                     except SMTPException, e:
-                        logging.getLogger('Mail').error(
-                            'Messages not sent: %s' % (e,))
+                        logger.error('Messages not sent: %s' % (e,))
                     else:
-                        logging.getLogger('Mail').info('Send email: %s'
-                            % email.rec_name)
+                        logger.info('Send email: %s' % email.rec_name)
                         email.mailbox = sent_mailbox
                         email.flag_send = True
                     finally:
@@ -483,8 +481,7 @@ class ElectronicMail(ModelSQL, ModelView):
                 self.raise_user_error('smtp_error',
                     error_args=(e,))
             except UserError:
-                logging.getLogger(' Mail').error(' Message not sent: %s' %
-                    (e,))
+                logger.error(' Message not sent: %s' % (e,))
                 return False
         return True
 
@@ -781,8 +778,7 @@ class ElectronicMail(ModelSQL, ModelView):
             datetime.fromtimestamp(
                 mktime(parsedate(mail.get('date')))))
         if not mailbox:
-            logging.getLogger('Electronic Mail').error(
-                'Not mailbox configured.')
+            logger.error('Not mailbox configured.')
             return
 
         values = {
