@@ -62,10 +62,10 @@ def _decode_body(part):
         charset = chardet.detect(payload).get('encoding')
     return payload.decode(charset).strip()
 
-def msg_from_string(buffer_):
-    " Convert mail file (buffer) to Email class"
-    if isinstance(buffer_, (buffer, basestring)):
-        return message_from_string(buffer_)
+def msg_from_string(email_file):
+    " Convert email file to string"
+    if isinstance(email_file, (bytearray)):
+        return message_from_string(email_file)
     return None
 
 
@@ -672,7 +672,7 @@ class ElectronicMail(ModelSQL, ModelView):
                 db_name, 'email', filename[0:2], filename)
             try:
                 with open(filename, 'rb') as file_p:
-                    value = buffer(file_p.read())
+                    value = fields.Binary.cast(file_p.read())
             except IOError:
                 pass
         return value
