@@ -122,7 +122,7 @@ msgstr "De"
 
 msgctxt "field:electronic.mail,id:"
 msgid "ID"
-msgstr "Identificador"
+msgstr "ID"
 
 msgctxt "field:electronic.mail,in_reply_to:"
 msgid "In-Reply-To"
@@ -206,7 +206,7 @@ msgstr "Error"
 
 msgctxt "field:electronic.mail.configuration,id:"
 msgid "ID"
-msgstr "Identificador"
+msgstr "ID"
 
 msgctxt "field:electronic.mail.configuration,outbox:"
 msgid "Outbox"
@@ -250,7 +250,7 @@ msgstr "Error"
 
 msgctxt "field:electronic.mail.configuration.company,id:"
 msgid "ID"
-msgstr "Identificador"
+msgstr "ID"
 
 msgctxt "field:electronic.mail.configuration.company,outbox:"
 msgid "Outbox"
@@ -282,7 +282,7 @@ msgstr "Usuario creación"
 
 msgctxt "field:electronic.mail.mailbox,id:"
 msgid "ID"
-msgstr "Identificador"
+msgstr "ID"
 
 msgctxt "field:electronic.mail.mailbox,name:"
 msgid "Name"
@@ -330,7 +330,7 @@ msgstr "Usuario creación"
 
 msgctxt "field:electronic.mail.mailbox.read.res.user,id:"
 msgid "ID"
-msgstr "Identificador"
+msgstr "ID"
 
 msgctxt "field:electronic.mail.mailbox.read.res.user,mailbox:"
 msgid "Mailbox"
@@ -362,7 +362,7 @@ msgstr "Usuario creación"
 
 msgctxt "field:electronic.mail.mailbox.write.res.user,id:"
 msgid "ID"
-msgstr "Identificador"
+msgstr "ID"
 
 msgctxt "field:electronic.mail.mailbox.write.res.user,mailbox:"
 msgid "mailbox"
@@ -491,6 +491,10 @@ msgstr "Correo electrónico"
 msgctxt "view:electronic.mail:"
 msgid "Emails"
 msgstr "Correos electrónicos"
+
+msgctxt "view:electronic.mail:"
+msgid "Time"
+msgstr "Hora"
 
 msgctxt "view:res.user:"
 msgid "Signature"

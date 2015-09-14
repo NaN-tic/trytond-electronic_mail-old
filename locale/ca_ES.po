@@ -492,6 +492,10 @@ msgctxt "view:electronic.mail:"
 msgid "Emails"
 msgstr "Correus electrònics"
 
+msgctxt "view:electronic.mail:"
+msgid "Time"
+msgstr "Hora"
+
 msgctxt "view:res.user:"
 msgid "Signature"
 msgstr "Firma"
