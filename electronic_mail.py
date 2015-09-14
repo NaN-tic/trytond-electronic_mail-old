@@ -642,12 +642,14 @@ class ElectronicMail(ModelSQL, ModelView):
         return dict([(mail.id, mail.mailbox.user.id) for mail in mails])
 
     @classmethod
-    def get_mailbox_users(cls, records, names):
+    def get_mailbox_users(cls, records, name):
+        assert name in ('mailbox_read_users', 'mailbox_write_users')
         res = {}
-        for name in names:
-            assert name in ('mailbox_read_users', 'mailbox_write_users')
-            for mail in records:
-                res[name][mail.id] = [x.id for x in mail.mailbox[name[8:]]]
+        for mail in records:
+            if name == 'mailbox_read_users':
+                res[mail.id] = [x.id for x in mail.mailbox['read_users']]
+            else:
+                res[mail.id] = [x.id for x in mail.mailbox['write_users']]
         return res
 
     @classmethod
