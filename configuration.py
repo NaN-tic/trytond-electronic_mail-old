@@ -39,7 +39,7 @@ class ElectronicMailConfiguration(ModelSingleton, ModelSQL, ModelView):
         res = {}
         ConfigurationCompany = Pool().get(
             'electronic.mail.configuration.company')
-        company_id = Transaction().context.get('company')
+        company_id = Transaction().context.get('company', 1)
         conf_id = configurations[0].id
         if company_id:
             confs = ConfigurationCompany.search([
