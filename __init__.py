@@ -12,7 +12,6 @@ def register():
         Mailbox,
         ElectronicMail,
         ElectronicMailConfiguration,
-        ElectronicMailConfigurationCompany,
         ReadUser,
         User,
         WriteUser,
