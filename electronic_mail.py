@@ -399,6 +399,7 @@ class ElectronicMail(ModelSQL, ModelView):
             ])
         if not mailboxs:
             logger.warning('Configure mailboxs to send by the scheduler')
+            return
 
         emails = cls.search([
             ('mailbox', 'in', mailboxs)
