@@ -103,7 +103,15 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
       <field name="perm_create" eval="False"/>
       <field name="perm_delete" eval="False"/>
     </record>
-    <!-- Access Rule Mail -->
+    <record model="ir.model.access" id="access_mailbox">
+      <field name="model" search="[('model', '=', 'electronic.mail.mailbox')]"/>
+      <field name="perm_read" eval="False"/>
+      <field name="perm_write" eval="False"/>
+      <field name="perm_create" eval="False"/>
+      <field name="perm_delete" eval="False"/>
+    </record>
+
+    <!-- Access Rule E-Mail -->
     <record model="ir.model.access" id="access_mail_admin">
       <field name="model" search="[('model', '=', 'electronic.mail')]"/>
       <field name="group" ref="group_email_admin"/>
@@ -119,6 +127,13 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
       <field name="perm_write" eval="True"/>
       <field name="perm_create" eval="True"/>
       <field name="perm_delete" eval="True"/>
+    </record>
+    <record model="ir.model.access" id="access_mail">
+      <field name="model" search="[('model', '=', 'electronic.mail')]"/>
+      <field name="perm_read" eval="False"/>
+      <field name="perm_write" eval="False"/>
+      <field name="perm_create" eval="False"/>
+      <field name="perm_delete" eval="False"/>
     </record>
 
     <!-- Rule to read mailboxes -->
