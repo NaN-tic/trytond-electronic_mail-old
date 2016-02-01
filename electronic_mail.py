@@ -683,7 +683,7 @@ class ElectronicMail(ModelSQL, ModelView):
             result[fname] = {}
         for mail in mails:
             email_file = mail._get_email() or None
-            result['mail_file'][mail.id] = fields.Binary.cast(mail_file)
+            result['mail_file'][mail.id] = fields.Binary.cast(email_file)
             email = msg_from_string(email_file)
             body = cls.get_body(mail, email)
             result['body_plain'][mail.id] = body.get('body_plain')
