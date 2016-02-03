@@ -14,6 +14,5 @@ class User:
 
     @classmethod
     def __setup__(cls):
-        if not cls._preferences_fields:
-            cls._preferences_fields = []
-        cls._preferences_fields.append('signature_html')
+        super(User, cls).__setup__()
+        cls._preferences_fields.extend(['signature_html'])
