@@ -11,7 +11,7 @@ from trytond.config import config
 from trytond.exceptions import UserError
 from trytond.model import ModelView, ModelSQL, fields
 from trytond.pool import Pool
-from trytond.pyson import Bool, Eval
+from trytond.pyson import Bool, Eval, PYSONEncoder
 from trytond.tools.misc import reduce_ids
 from trytond.transaction import Transaction
 from email import message_from_string
@@ -124,6 +124,8 @@ class Mailbox(ModelSQL, ModelView):
         ActionKeyword = pool.get('ir.action.keyword')
         ActWindowView = pool.get('ir.action.act_window.view')
 
+        encoder = PYSONEncoder()
+
         act_windows = []
         actions = []
         keywords = []
@@ -132,7 +134,7 @@ class Mailbox(ModelSQL, ModelView):
         for mailbox in mailboxes:
             act_windows.extend(ActWindow.search([
                     ('res_model', '=', 'electronic.mail'),
-                    ('domain', '=', str([('mailbox', '=', mailbox.id)])),
+                    ('domain', '=', encoder.encode([('mailbox', '=', mailbox.id)])),
                     ]))
             actions.extend([a_w.action for a_w in act_windows])
             keywords.extend(ActionKeyword.search([('action', 'in', actions)]))
@@ -153,22 +155,23 @@ class Mailbox(ModelSQL, ModelView):
         # TODO Add a wizard that pops up a window telling that menu is updated
         # and that in order to see it, you must type ALT+T or refresh the menu
         # by clicking menu User > Refresh Menu
+        pool = Pool()
+        ActWindow = pool.get('ir.action.act_window')
+        Action = pool.get('ir.action')
+        ActionKeyword = pool.get('ir.action.keyword')
+        Menu = pool.get('ir.ui.menu')
+
+        encoder = PYSONEncoder()
+
         acts = iter(args)
         for mailboxes, values in zip(acts, acts):
             if 'name' in values:
-                pool = Pool()
-                ActWindow = pool.get('ir.action.act_window')
-                Action = pool.get('ir.action')
-                ActionKeyword = pool.get('ir.action.keyword')
-                Menu = pool.get('ir.ui.menu')
-
                 actions = []
                 menus = []
                 for mailbox in mailboxes:
                     act_windows = ActWindow.search([
                             ('res_model', '=', 'electronic.mail'),
-                            ('domain', '=', str([
-                                        ('mailbox', '=', mailbox.id)])),
+                            ('domain', '=', encoder.encode([('mailbox', '=', mailbox.id)])),
                             ])
                     actions.extend([a_w.action for a_w in act_windows])
                     keywords = ActionKeyword.search([
@@ -192,6 +195,8 @@ class Mailbox(ModelSQL, ModelView):
         ActionKeyword = pool.get('ir.action.keyword')
         ActWindowView = pool.get('ir.action.act_window.view')
         View = pool.get('ir.ui.view')
+
+        encoder = PYSONEncoder()
 
         for mailbox in mailboxes:
             act_windows = ActWindow.search([
@@ -217,7 +222,7 @@ class Mailbox(ModelSQL, ModelView):
                     } for mb in mailboxes])
         act_windows = ActWindow.create([{
                     'res_model': 'electronic.mail',
-                    'domain': str([('mailbox', '=', mb.id)]),
+                    'domain': encoder.encode([('mailbox', '=', mb.id)]),
                     'action': a.id,
                     }
                 for mb in mailboxes for a in actions if a.name == mb.name])
