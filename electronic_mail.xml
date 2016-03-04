@@ -130,7 +130,7 @@ The COPYRIGHT file at the top level of this repository contains the full copyrig
     </record>
     <record model="ir.model.access" id="access_mail">
       <field name="model" search="[('model', '=', 'electronic.mail')]"/>
-      <field name="perm_read" eval="False"/>
+      <field name="perm_read" eval="True"/>
       <field name="perm_write" eval="False"/>
       <field name="perm_create" eval="False"/>
       <field name="perm_delete" eval="False"/>
