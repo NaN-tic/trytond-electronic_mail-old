@@ -340,7 +340,7 @@ class ElectronicMail(ModelSQL, ModelView):
 
     @classmethod
     def __register__(cls, module_name):
-        cursor = Transaction().cursor
+        cursor = Transaction().connection.cursor()
         sql_table = cls.__table__()
 
         super(ElectronicMail, cls).__register__(module_name)
@@ -666,7 +666,7 @@ class ElectronicMail(ModelSQL, ModelView):
         Returns the email object from reading the FS
         :param electronic_mail: Browse Record of the mail
         """
-        db_name = Transaction().cursor.dbname
+        db_name = Transaction().database.name
         value = u''
         if self.digest:
             filename = self.digest
@@ -707,7 +707,7 @@ class ElectronicMail(ModelSQL, ModelView):
         """
         if data is False or data is None:
             return
-        db_name = Transaction().cursor.dbname
+        db_name = Transaction().database.name
         # Prepare Directory <DATA PATH>/<DB NAME>/email
         directory = os.path.join(config.get('database', 'path'), db_name)
         if not os.path.isdir(directory):
@@ -735,7 +735,7 @@ class ElectronicMail(ModelSQL, ModelView):
             with open(filename, 'r') as file_p:
                 data2 = file_p.read()
             if data != data2:
-                cursor = Transaction().cursor
+                cursor = Transaction().connection.cursor()
                 cursor.execute(
                     'SELECT DISTINCT(collision) FROM electronic_mail '
                     'WHERE digest = %s AND collision !=0 '
