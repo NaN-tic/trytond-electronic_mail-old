@@ -5,10 +5,10 @@ from trytond.pool import PoolMeta
 from trytond.model import fields
 
 __all__ = ['User']
-__metaclass__ = PoolMeta
 
 
 class User:
+    __metaclass__ = PoolMeta
     __name__ = "res.user"
     signature_html = fields.Text('Signature')
 
