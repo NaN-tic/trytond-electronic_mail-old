@@ -23,6 +23,7 @@ import os
 from smtplib import SMTPAuthenticationError, SMTPException
 import chardet
 import mimetypes
+import platform
 
 logger = logging.getLogger(__name__)
 
@@ -39,6 +40,10 @@ except ImportError:
     CHECK_EMAIL = False
     logger.warning('Unable to import emailvalid. Email validation disabled.')
 
+if platform.python_implementation() == 'PyPy':
+    PyPy = True
+else:
+    PyPy = False
 
 def _make_header(data, charset='utf-8'):
     return str(make_header([(data, charset)]))
@@ -803,8 +808,10 @@ class ElectronicMail(ModelSQL, ModelView):
             'reference': _decode_header(mail.get('references')),
             'reply_to': _decode_header(mail.get('reply-to')),
             'email_file': mail.as_string(),
-            'size': getsizeof(mail.as_string()),
             }
+
+        if not PyPy:
+            values['size'] = getsizeof(mail.as_string())
 
         email = cls.create([values])[0]
         return email
