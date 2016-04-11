@@ -544,7 +544,13 @@ class ElectronicMail(ModelSQL, ModelView):
 
     @classmethod
     def search_rec_name(cls, name, clause):
-        return ['OR',
+        domain = super(ElectronicMail, cls).search_rec_name(name, clause)
+        if clause[1].startswith('!') or clause[1].startswith('not '):
+            bool_op = 'AND'
+        else:
+            bool_op = 'OR'
+        return [bool_op,
+            domain,
             ('subject',) + tuple(clause[1:]),
             ('from_',) + tuple(clause[1:]),
             ('to',) + tuple(clause[1:]),
